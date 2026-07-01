@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+    <script>
+        const ROOT = location.hostname === "localhost"
+            ? "/PZ"
+            : "/ProjectZero";
+    </script>
     <style>
         /* ============================================================
    TOKENS
@@ -36,12 +42,14 @@
             --radius2: 4px;
             --transition: 200ms ease;
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: var(--body);
         }
+
         body {
             background:
                 radial-gradient(circle at top, #1d2430 0%, #0b0d11 70%);
@@ -52,31 +60,38 @@
             align-items: center;
             padding: 60px;
         }
+
         .container {
             width: min(1400px, 100%);
         }
+
         header {
             text-align: center;
             margin-bottom: 70px;
         }
+
         header h1 {
             font-size: 58px;
             letter-spacing: 2px;
             font-weight: 900;
         }
+
         header span {
-            color:var(--orange);
+            color: var(--orange);
         }
+
         header p {
             margin-top: 12px;
-            color:var(--text2);
+            color: var(--text2);
             font-size: 20px;
         }
+
         .menu {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 40px;
         }
+
         .menuCard {
             background: #171C24;
             border: 1px solid var(--border);
@@ -88,6 +103,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .menuCard::before {
             content: "";
             position: absolute;
@@ -102,17 +118,20 @@
                     transparent);
             transition: .6s;
         }
+
         .menuCard:hover::before {
             left: 170%;
         }
+
         .menuCard:hover {
             transform:
                 translateY(-10px);
-            border-color:var(--orange);
+            border-color: var(--orange);
             box-shadow:
                 0 25px 60px rgba(0, 0, 0, .5),
                 0 0 25px rgba(245, 158, 11, .20);
         }
+
         .menuCard img {
             width: 140px;
             height: 140px;
@@ -121,64 +140,79 @@
             transition: .35s;
             animation: float 3s ease-in-out infinite;
         }
+
         .menuCard:hover img {
             transform: scale(1.08);
         }
+
         .menuCard h2 {
             font-size: 34px;
             margin-bottom: 15px;
         }
+
         .menuCard p {
             color: #A7A7A7;
             line-height: 1.8;
             font-size: 16px;
         }
+
         .fullCard {
             grid-column: 1 / -1;
             max-width: 900px;
             margin: auto;
             padding: 55px;
         }
+
         .fullCard iconify-icon {
             font-size: 90px;
             margin-bottom: 25px;
         }
+
         .fullCard h2 {
             font-size: 42px;
         }
+
         .fullCard p {
             max-width: 650px;
             margin: 20px auto 35px;
             font-size: 18px;
         }
+
         .fullCard button {
             padding: 18px 45px;
             font-size: 18px;
         }
+
         @keyframes float {
             0% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-8px);
             }
+
             100% {
                 transform: translateY(0);
             }
         }
+
         @media(max-width:1000px) {
             .menu {
                 grid-template-columns: 1fr;
             }
+
             header h1 {
                 font-size: 42px;
             }
+
             .menuCard {
                 padding: 40px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -230,4 +264,5 @@
         </div>
     </div>
 </body>
+
 </html>

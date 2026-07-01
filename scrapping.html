@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <script>
+        const ROOT = location.hostname === "localhost"
+            ? "/PZ"
+            : "/ProjectZero";
+    </script>
     <style>
         * {
             margin: 0;
@@ -15,6 +21,7 @@
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
+
         body {
             background: #0b0d11;
             color: white;
@@ -22,6 +29,7 @@
             background-image:
                 radial-gradient(circle at top, #1c2028 0%, #0b0d11 60%);
         }
+
         /*=========================
 PAGE TITLE
 =========================*/
@@ -29,19 +37,23 @@ PAGE TITLE
             text-align: center;
             margin-bottom: 50px;
         }
+
         .pageTitle h1 {
             font-size: 52px;
             font-weight: 800;
             letter-spacing: 2px;
         }
+
         .pageTitle span {
             color: #F59E0B;
         }
+
         .pageTitle p {
             margin-top: 12px;
             font-size: 18px;
             color: #9ca3af;
         }
+
         /*=========================
 HEADER
 =========================*/
@@ -58,6 +70,7 @@ HEADER
             box-shadow:
                 0 25px 60px rgba(0, 0, 0, .45);
         }
+
         /*=========================
 LEFT
 =========================*/
@@ -66,6 +79,7 @@ LEFT
             justify-content: center;
             align-items: center;
         }
+
         .machineImage img {
             width: 420px;
             height: 420px;
@@ -75,6 +89,7 @@ LEFT
             padding: 20px;
             border: 5px solid #343b47;
         }
+
         /*=========================
 RIGHT
 =========================*/
@@ -83,11 +98,13 @@ RIGHT
             font-weight: 800;
             margin-bottom: 8px;
         }
+
         .machineInfo .subtitle {
             color: #F59E0B;
             font-size: 18px;
             margin-bottom: 30px;
         }
+
         /*=========================
 INFO GRID
 =========================*/
@@ -97,22 +114,26 @@ INFO GRID
             gap: 18px;
             margin-bottom: 30px;
         }
+
         .infoBox {
             background: #1B2028;
             padding: 18px;
             border-radius: 12px;
             border: 1px solid #303844;
         }
+
         .infoBox label {
             display: block;
             font-size: 13px;
             color: #8f96a3;
             margin-bottom: 8px;
         }
+
         .infoBox span {
             font-size: 17px;
             font-weight: 600;
         }
+
         /*=========================
 HOW TO
 =========================*/
@@ -122,16 +143,19 @@ HOW TO
             border-radius: 14px;
             padding: 25px;
         }
+
         .guide h3 {
             color: #F59E0B;
             margin-bottom: 18px;
             font-size: 22px;
         }
+
         .guide ol {
             padding-left: 20px;
             line-height: 2;
             color: #d1d5db;
         }
+
         /*=========================
 RESPONSIVE
 =========================*/
@@ -140,13 +164,16 @@ RESPONSIVE
                 grid-template-columns: 1fr;
                 text-align: center;
             }
+
             .machineImage {
                 order: -1;
             }
+
             .infoGrid {
                 grid-template-columns: 1fr;
             }
         }
+
         /*========================================
 PART 2
 ========================================*/
@@ -154,17 +181,21 @@ PART 2
             max-width: 1200px;
             margin: 70px auto 0;
         }
+
         .sectionHeader {
             margin-bottom: 25px;
         }
+
         .sectionHeader h2 {
             font-size: 34px;
             font-weight: 800;
             margin-bottom: 8px;
         }
+
         .sectionHeader p {
             color: #9CA3AF;
         }
+
         /* SEARCH */
         .searchArea {
             display: flex;
@@ -176,10 +207,12 @@ PART 2
             padding: 0 20px;
             margin: 25px 0;
         }
+
         .searchArea iconify-icon {
             font-size: 24px;
             color: #888;
         }
+
         .searchArea input {
             flex: 1;
             height: 60px;
@@ -189,6 +222,7 @@ PART 2
             font-size: 17px;
             color: white;
         }
+
         /* FILTER */
         .categoryFilter {
             display: flex;
@@ -196,6 +230,7 @@ PART 2
             gap: 12px;
             margin-bottom: 35px;
         }
+
         .categoryFilter button {
             padding: 12px 22px;
             border-radius: 50px;
@@ -206,20 +241,24 @@ PART 2
             font-size: 15px;
             transition: .25s;
         }
+
         .categoryFilter button:hover {
             background: #252C37;
         }
+
         .categoryFilter .active {
             background: #F59E0B;
             color: #111;
             font-weight: 700;
         }
+
         /* GRID */
         .itemGrid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 22px;
         }
+
         /* CARD */
         .itemCard {
             background: #171B22;
@@ -230,12 +269,14 @@ PART 2
             cursor: pointer;
             transition: .25s;
         }
+
         .itemCard:hover {
             transform: translateY(-6px);
             border-color: #F59E0B;
             box-shadow:
                 0 20px 45px rgba(0, 0, 0, .45);
         }
+
         .itemCard img {
             width: 120px;
             height: 120px;
@@ -244,10 +285,12 @@ PART 2
             display: block;
             margin-bottom: 18px;
         }
+
         .itemCard h3 {
             font-size: 19px;
             margin-bottom: 10px;
         }
+
         .itemCard span {
             display: inline-block;
             padding: 7px 14px;
@@ -256,6 +299,7 @@ PART 2
             font-size: 13px;
             color: #F59E0B;
         }
+
         /*=====================================
 PART 3
 ======================================*/
@@ -263,6 +307,7 @@ PART 3
             max-width: 1200px;
             margin: 80px auto;
         }
+
         .calculatorCard {
             display: grid;
             grid-template-columns: 260px 1fr;
@@ -272,11 +317,13 @@ PART 3
             border: 1px solid #313844;
             border-radius: 22px;
         }
+
         .calculatorLeft {
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .calculatorLeft img {
             width: 180px;
             height: 180px;
@@ -286,45 +333,54 @@ PART 3
             padding: 20px;
             border: 1px solid #303844;
         }
+
         .calculatorRight h2 {
             font-size: 34px;
             margin-bottom: 8px;
         }
+
         .category {
             display: inline-block;
             margin-bottom: 30px;
             color: #F59E0B;
             font-weight: 600;
         }
+
         .calculatorInfo {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 18px;
             margin-bottom: 30px;
         }
+
         .calculatorInfo div {
             background: #1F252E;
             padding: 18px;
             border-radius: 12px;
             border: 1px solid #313844;
         }
+
         .calculatorInfo label {
             display: block;
             font-size: 13px;
             color: #9CA3AF;
             margin-bottom: 8px;
         }
+
         .calculatorInfo strong {
             font-size: 20px;
         }
+
         .scrapControl {
             margin-bottom: 30px;
         }
+
         .scrapControl label {
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
         }
+
         .scrapControl input {
             width: 100%;
             height: 55px;
@@ -337,6 +393,7 @@ PART 3
             outline: none;
             transition: .25s;
         }
+
         .scrapButton {
             height: 60px;
             width: 100%;
@@ -352,22 +409,27 @@ PART 3
             gap: 12px;
             transition: .25s;
         }
+
         .scrapButton:hover {
             transform: translateY(-3px);
             box-shadow:
                 0 15px 30px rgba(245, 158, 11, .30);
         }
+
         .scrapButton iconify-icon {
             font-size: 24px;
         }
+
         @media(max-width:900px) {
             .calculatorCard {
                 grid-template-columns: 1fr;
             }
+
             .calculatorInfo {
                 grid-template-columns: 1fr;
             }
         }
+
         /*=========================================
 PART 4
 ==========================================*/
@@ -375,12 +437,14 @@ PART 4
             max-width: 1200px;
             margin: 80px auto;
         }
+
         .outputCard {
             background: #171B22;
             border: 1px solid #303844;
             border-radius: 20px;
             padding: 30px;
         }
+
         .outputHeader {
             display: flex;
             justify-content: space-between;
@@ -389,13 +453,16 @@ PART 4
             padding-bottom: 20px;
             border-bottom: 1px solid #2e3642;
         }
+
         .outputHeader h3 {
             font-size: 28px;
             margin-bottom: 5px;
         }
+
         .outputHeader span {
             color: #9CA3AF;
         }
+
         .outputHeader button {
             background: #22C55E;
             border: none;
@@ -406,15 +473,18 @@ PART 4
             cursor: pointer;
             transition: .25s;
         }
+
         .outputHeader button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(34, 197, 94, .25);
         }
+
         .outputGrid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 18px;
         }
+
         .outputItem {
             display: flex;
             align-items: center;
@@ -425,10 +495,12 @@ PART 4
             border: 1px solid #303844;
             transition: .25s;
         }
+
         .outputItem:hover {
             border-color: #F59E0B;
             transform: translateY(-3px);
         }
+
         .outputItem img {
             width: 64px;
             height: 64px;
@@ -437,44 +509,53 @@ PART 4
             padding: 8px;
             border-radius: 12px;
         }
+
         .outputItem h4 {
             margin-bottom: 4px;
             font-size: 18px;
         }
+
         .outputItem small {
             color: #9CA3AF;
         }
+
         .outputItem strong {
             margin-left: auto;
             font-size: 26px;
             color: #F59E0B;
             font-weight: 800;
         }
+
         @media(max-width:850px) {
             .outputHeader {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 20px;
             }
+
             .outputHeader button {
                 width: 100%;
             }
         }
+
         /*==============================
 SHOW / HIDE SECTION
 ==============================*/
         .hidden {
             display: none;
         }
+
         .show {
             display: block;
             animation: fadeUp .45s ease;
         }
+
         @keyframes fadeUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: none;
@@ -482,6 +563,7 @@ SHOW / HIDE SECTION
         }
     </style>
 </head>
+
 <body>
     <div class="pageTitle">
         <h1>SCRAP <span>MACHINE</span></h1>
@@ -723,4 +805,5 @@ SHOW / HIDE SECTION
         }
     </script>
 </body>
+
 </html>
