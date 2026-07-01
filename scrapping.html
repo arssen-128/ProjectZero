@@ -13,6 +13,9 @@
         const ROOT = location.hostname === "localhost"
             ? "/PZ"
             : "/ProjectZero";
+        function img(path) {
+            return ROOT + "/images/" + path;
+        }
     </script>
     <style>
         * {
@@ -571,7 +574,7 @@ SHOW / HIDE SECTION
     </div>
     <div class="machineCard">
         <div class="machineImage">
-            <img src="images/!scrap machine.png">
+            <img id="scrapMachineImg">
         </div>
         <div class="machineInfo">
             <h2>Scrap Machine</h2>
@@ -667,8 +670,8 @@ SHOW / HIDE SECTION
         class="itemCard"
         onclick="selectScrapItem(${item.id})">
             <img
-            src="images/${item.image}"
-            onerror="this.src='images/no-image.png'">
+            src="${img(item.image)}"
+            onerror="this.src=img('no-image.png')">
             <h3>${item.name}</h3>
             <span>
                 Minimum :
@@ -694,9 +697,11 @@ SHOW / HIDE SECTION
             return DB.items.find(i => i.id == id);
         }
         let DB = {};
-        fetch("project_zero.json")
+        fetch(ROOT + "/project_zero.json")
             .then(res => res.json())
             .then(data => {
+                document.getElementById("scrapMachineImg").src =
+                    img("!scrap machine.png");
                 data.forEach(table => {
                     if (table.type === "table") {
                         DB[table.name] = table.data;
@@ -710,8 +715,8 @@ SHOW / HIDE SECTION
             document.getElementById("calculatorCard").innerHTML = `
                 <div class="calculatorLeft">
                     <img
-                    src="images/${item.image}"
-                    onerror="this.src='images/no-image.png'">
+                    src="${img(item.image)}"
+                    onerror="this.src=img('no-image.png')">
                 </div>
                 <div class="calculatorRight">
                     <h2>${item.name}</h2>
@@ -770,8 +775,8 @@ SHOW / HIDE SECTION
                 itemsHTML += `
             <div class="outputItem">
                 <img
-                    src="images/${material.image}"
-                    onerror="this.src='images/no-image.png'">
+                    src="${img(material.image)}"
+                    onerror="this.src=img('no-image.png')">
                 <div>
                     <h4>${material.name}</h4>
                     <small>${material.category}</small>
