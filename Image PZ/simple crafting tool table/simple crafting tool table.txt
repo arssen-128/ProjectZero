@@ -1,0 +1,48 @@
+Torch
+	Recipe
+	200g
+	5s
+	1x 2x4
+	1x Rubbing Alcohol
+	1x Lighter
+	2x Dirty Clothes
+Fire Wick
+	Recipe
+	50g
+	5s
+	15x Dirty Clothes
+Pencil
+	Recipe
+	100g
+	A pencil for writing
+	5s
+	1x Oak Plank
+Paper
+	Recipe
+	350g
+	A piece of paper
+	5s
+	15x Paper Scraps
+Compass
+	Recipe
+	0g
+	5s
+	1x Metal Beams
+	5x Plastic
+	10x Scrap Metal
+Metal Composite
+	Recipe
+	300g
+	5s
+	1x Reinforced Plastic
+	100x Scrap Metal
+Reinforced Plastic
+	Recipe
+	500g
+	5s
+	125x Plastic
+Code Lock
+	Recipe
+	0g
+	5s
+	15x Scrap Metal

@@ -1,0 +1,12 @@
+Medical
+	Common
+		Antifreeze.png
+		Rubbing Alcohol.png
+		Tampon.png
+	Epic
+		Improvsed Bandage.png
+	Mythic
+	Rare
+		Antibiotics A.png
+		Dirty Bandage.png
+	Uncommon

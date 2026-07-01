@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Zero - Loot Database</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           TOKENS (shared with Project Zero database)
+           ============================================================ */
+        :root {
+            --bg:           #0d0c0a;
+            --bg2:          #111009;
+            --surface:      #181510;
+            --surface2:     #1e1b14;
+            --surface3:     #252018;
+            --border:       #2e2820;
+            --border2:      #3c3428;
+            --orange:       #c8651a;
+            --orange2:      #e07a20;
+            --orange-dim:   rgba(200,101,26,.12);
+            --orange-glow:  rgba(200,101,26,.25);
+            --orange-faint: rgba(200,101,26,.06);
+            --text:         #d4c9b0;
+            --text2:        #8e8272;
+            --text3:        #55503f;
+            --rust:         #7a3e12;
+            --danger:       #9b2c2c;
+            --mono:         'Share Tech Mono', monospace;
+            --display:      'Rajdhani', sans-serif;
+            --body:         'Barlow', sans-serif;
+            --radius:       2px;
+            --radius2:      4px;
+            --transition:   200ms ease;
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--body);
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: .4;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--rust); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+        /* ============================================================
+           CONTAINER
+           ============================================================ */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: min(1600px, 95%);
+            margin: auto;
+            padding: 0 0 80px;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        header {
+            position: relative;
+            padding: 56px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: var(--orange);
+            box-shadow: 0 0 18px var(--orange-glow);
+        }
+
+        .eyebrow {
+            display: block;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .22em;
+            color: var(--text3);
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .title-block { display: inline-block; position: relative; }
+
+        header h1 {
+            font-family: var(--display);
+            font-size: clamp(38px, 6.5vw, 76px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        header h1 span {
+            color: var(--orange);
+            text-shadow: 0 0 40px var(--orange-glow), 0 0 80px rgba(200,101,26,.15);
+        }
+
+        header p {
+            font-family: var(--body);
+            font-weight: 300;
+            margin-top: 14px;
+            color: var(--text2);
+            font-size: 14px;
+            line-height: 1.7;
+            letter-spacing: .01em;
+        }
+
+        .status-strip {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 28px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text3);
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--orange);
+            box-shadow: 0 0 8px var(--orange);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .3; }
+        }
+
+        /* ============================================================
+           SEARCH
+           ============================================================ */
+        .searchBox {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+        }
+
+        .searchBox-inner {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .searchBox-inner svg {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text3);
+            pointer-events: none;
+            transition: color var(--transition);
+        }
+
+        .searchBox input {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--body);
+            font-size: 14px;
+            padding: 13px 16px 13px 46px;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            letter-spacing: .03em;
+        }
+
+        .searchBox input::placeholder { color: var(--text3); }
+
+        .searchBox input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px var(--orange-dim), 0 0 20px var(--orange-dim);
+        }
+
+        .searchBox-inner:focus-within svg { color: var(--orange); }
+
+        /* ============================================================
+           SECTION TITLE
+           ============================================================ */
+        .sectionTitle {
+            margin: 50px 0 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 14px;
+        }
+
+        .sectionTitle h2 {
+            font-family: var(--display);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--text);
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .sectionTitle h2::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 4px; bottom: 4px;
+            width: 3px;
+            background: var(--orange);
+            box-shadow: 0 0 10px var(--orange-glow);
+        }
+
+        .sectionTitle span {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .14em;
+            color: var(--text3);
+            text-transform: uppercase;
+        }
+
+        /* ============================================================
+           LOOT GRID / CARD  (identical card language to Project Zero DB)
+           ============================================================ */
+        .lootGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 18px;
+        }
+
+        .lootCard {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+            animation: card-in 320ms both ease-out;
+            text-align: center;
+        }
+
+        @keyframes card-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .lootCard::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            opacity: 0;
+            transition: opacity var(--transition);
+            z-index: 2;
+        }
+
+        .lootCard::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 30%, rgba(255,200,120,.06) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 550ms ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .lootCard:hover {
+            transform: translateY(-4px);
+            border-color: var(--border2);
+            box-shadow: 0 10px 40px rgba(0,0,0,.5), 0 0 0 1px var(--orange), 0 0 20px var(--orange-dim);
+        }
+
+        .lootCard:hover::before { opacity: 1; }
+        .lootCard:hover::after  { transform: translateX(100%); }
+
+        .lootImage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--surface2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .lootImage::before,
+        .lootImage::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 14px;
+            opacity: 0;
+            transition: opacity 200ms;
+            z-index: 2;
+        }
+        .lootImage::before { top: 6px; left: 6px; border-top: 1px solid var(--orange); border-left: 1px solid var(--orange); }
+        .lootImage::after  { bottom: 6px; right: 6px; border-bottom: 1px solid var(--orange); border-right: 1px solid var(--orange); }
+        .lootCard:hover .lootImage::before,
+        .lootCard:hover .lootImage::after { opacity: 1; }
+
+        .lootImage img {
+            width: 65%;
+            height: 65%;
+            object-fit: contain;
+            transition: transform 300ms ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lootCard:hover .lootImage img { transform: scale(1.08); }
+
+        .lootName {
+            font-family: var(--display);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            color: var(--text);
+            line-height: 1.3;
+            text-transform: uppercase;
+            padding: 14px 14px 4px;
+        }
+
+        .lootCount {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .12em;
+            color: var(--orange2);
+            text-transform: uppercase;
+            padding: 0 14px 16px;
+        }
+
+        /* ============================================================
+           LOADING / EMPTY STATE
+           ============================================================ */
+        .loading {
+            text-align: center;
+            padding: 100px 20px;
+            font-family: var(--mono);
+            font-size: 13px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        /* ============================================================
+           DETAIL SECTION
+           ============================================================ */
+        #gallerySection { transition: opacity 320ms ease, transform 320ms ease; }
+        #gallerySection.hide {
+            opacity: 0;
+            transform: translateX(-40px);
+            pointer-events: none;
+        }
+
+        #detailSection {
+            display: none;
+            margin-top: 8px;
+            animation: card-in 320ms ease;
+        }
+        #detailSection.show { display: block; }
+
+        .backButton {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border2);
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            padding: 11px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            margin: 24px 0 36px;
+            transition: border-color var(--transition), color var(--transition), background var(--transition);
+        }
+
+        .backButton:hover {
+            border-color: var(--orange);
+            color: var(--orange2);
+            background: var(--orange-faint);
+        }
+
+        #detailTitle {
+            font-family: var(--display);
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 28px;
+            position: relative;
+            padding-left: 18px;
+        }
+
+        #detailTitle::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 6px; bottom: 6px;
+            width: 4px;
+            background: var(--orange);
+            box-shadow: 0 0 12px var(--orange-glow);
+        }
+
+        .detailWrapper {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius2);
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+
+        .detailWrapper::before { content: none; }
+
+        .detailImage {
+            background: var(--surface2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 36px 24px;
+            position: relative;
+        }
+
+        .detailImage::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border2), transparent);
+        }
+
+        .detailImage img {
+            width: 190px;
+            height: 190px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 20px rgba(200,101,26,.2));
+        }
+
+        .detailInfo {
+            padding: 30px 32px;
+        }
+
+        .infoRow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .infoRow:last-child { border: none; }
+
+        .infoRow label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        .infoRow strong {
+            font-family: var(--display);
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: .03em;
+            color: var(--text);
+        }
+
+        .divider {
+            margin: 46px 0 36px;
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, var(--orange-glow), var(--border), transparent);
+        }
+
+        .lootTitle {
+            font-family: var(--display);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 22px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .lootTitle::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 56px; height: 1px;
+            background: var(--orange);
+        }
+
+        /* ============================================================
+           POSSIBLE LOOT GRID
+           ============================================================ */
+        .lootItemGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 16px;
+        }
+
+        .lootItem {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 14px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lootItem::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .lootItem:hover {
+            border-color: var(--border2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,.45), 0 0 16px var(--orange-dim);
+        }
+
+        .lootItem:hover::before { opacity: 1; }
+
+        .lootItem img {
+            width: 78px;
+            height: 78px;
+            object-fit: contain;
+            margin-bottom: 12px;
+            transition: transform 250ms ease;
+        }
+
+        .lootItem:hover img { transform: scale(1.08); }
+
+        .lootItem h4 {
+            font-family: var(--display);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .03em;
+            color: var(--text);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .lootChance {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+            font-family: var(--mono);
+            color: var(--orange2);
+            background: var(--orange-dim);
+            border: 1px solid rgba(200,101,26,.25);
+            border-radius: 2px;
+            padding: 2px 8px;
+            font-weight: 400;
+            font-size: 11px;
+            letter-spacing: .06em;
+        }
+
+        .lootQuantity {
+            margin-top: 8px;
+            color: var(--text2);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .08em;
+        }
+
+        .lootExtra {
+            margin-top: 5px;
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        /* ============================================================
+           POPUP
+           ============================================================ */
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.78);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: fade 220ms ease;
+        }
+
+        .hidden { display: none !important; }
+
+        @keyframes fade {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .popupBox {
+            width: 440px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius2);
+            padding: 0 32px 32px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 30px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(200,101,26,.15);
+            animation: pop 260ms cubic-bezier(.22,.61,.36,1);
+        }
+
+        .popupBox::before {
+            content: '';
+            display: block;
+            height: 3px;
+            margin: 0 -32px 28px;
+            background: linear-gradient(90deg, transparent, var(--orange) 30%, var(--orange2) 60%, transparent);
+        }
+
+        @keyframes pop {
+            from { transform: scale(.94) translateY(10px); opacity: 0; }
+            to   { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .closePopup {
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 32px; height: 32px;
+            border-radius: var(--radius);
+            background: var(--surface3);
+            color: var(--text2);
+            border: 1px solid var(--border2);
+            cursor: pointer;
+            font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background var(--transition), color var(--transition), border-color var(--transition);
+            z-index: 10;
+        }
+
+        .closePopup:hover {
+            background: var(--danger);
+            border-color: #c53030;
+            color: #fff;
+        }
+
+        .popupBox img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin: 4px auto 18px;
+            filter: drop-shadow(0 4px 20px rgba(200,101,26,.2));
+        }
+
+        #popupTitle {
+            font-family: var(--display);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--text);
+            line-height: 1.15;
+        }
+
+        #popupType {
+            margin-top: 6px;
+            margin-bottom: 6px;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .2em;
+            color: var(--orange);
+            text-transform: uppercase;
+        }
+
+        .popupInfo { margin-top: 18px; }
+
+        .popupRow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 4px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .popupRow:last-child { border: none; }
+
+        .popupRow span {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        .popupRow strong {
+            font-family: var(--display);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: .03em;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 900px) {
+            header h1 { font-size: 38px; }
+            .lootGrid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .detailWrapper { grid-template-columns: 1fr; }
+            .detailImage { border-right: none; border-bottom: 1px solid var(--border); padding: 28px; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 0 60px; }
+            .lootGrid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 10px; }
+            .lootItemGrid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="gallerySection">
+            <header>
+                <span class="eyebrow">// CLASSIFIED DATABASE //</span>
+                <div class="title-block">
+                    <h1>LOOT <span>DATABASE</span></h1>
+                </div>
+                <p>
+                    Browse every Loot Source available in Project Zero.<br>
+                    Discover where every item can be obtained throughout the world.
+                </p>
+                <div class="status-strip">
+                    <div class="status-item"><span class="status-dot"></span>System Online</div>
+                    <div class="status-item">·</div>
+                    <div class="status-item">Classification: RESTRICTED</div>
+                    <div class="status-item">·</div>
+                    <div class="status-item">Sector 7 — Safehouse Alpha</div>
+                </div>
+                <div class="searchBox">
+                    <div class="searchBox-inner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search Item (Plastic, Bolt, Fabric...)" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </header>
+            <div class="sectionTitle">
+                <h2>Loot Sources</h2>
+                <span id="totalSource">
+                    Loading...
+                </span>
+            </div>
+            <div class="lootGrid" id="lootGrid">
+                <div class="loading">
+                    Loading Loot Sources...
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================================-->
+    <div id="detailSection">
+        <div class="container" style="padding-bottom:0;">
+        <button class="backButton" onclick="backHome()">
+            ← Back
+        </button>
+        <h1 id="detailTitle">
+        </h1>
+        <div class="detailWrapper">
+            <div class="detailImage">
+                <img id="detailImage">
+            </div>
+            <div class="detailInfo">
+                <div class="infoRow">
+                    <label>Name</label>
+                    <strong id="infoName"></strong>
+                </div>
+                <div class="infoRow">
+                    <label>Variation</label>
+                    <strong id="infoVariation"></strong>
+                </div>
+                <div class="infoRow">
+                    <label>Required Tool</label>
+                    <strong id="infoTool"></strong>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <h2 class="lootTitle">
+            Possible Loot
+        </h2>
+
+        <div class="lootItemGrid" id="lootItemGrid">
+
+        </div>
+        </div>
+    </div>
+
+    <script>
+        const DB = {};
+        function getImage(path) {
+            if (!path)
+                return "images/no-image.png";
+            return "images/" + path;
+        }
+        fetch("project_zero.json")
+            .then(res => res.json())
+            .then(data => {
+
+                data.forEach(table => {
+
+                    if (table.type === "table") {
+
+                        DB[table.name] = table.data;
+
+                    }
+
+                });
+
+                console.log(DB);
+                console.log(DB.items);
+                console.log(DB.loot_sources);
+                console.log(DB.loot_items);
+                renderLootSources();
+
+            })
+            .catch(err => console.error(err));
+        function renderLootSources() {
+            const grid = document.getElementById("lootGrid");
+            document.getElementById("totalSource").innerHTML =
+                DB.loot_sources.length + " Loot Sources";
+            let html = "";
+            DB.loot_sources.forEach((source, index) => {
+                html += `
+                <div
+                    class="lootCard"
+                    style="animation-delay:${index * 12}ms"
+                    onclick="openLootSource(${source.id})">
+                    <div class="lootImage">
+                        <img
+                            src="${getImage(source.image)}"
+                            onerror="this.src='images/no-image.png'">
+                    </div>
+                    <div class="lootName">
+                        ${source.name}
+                    </div>
+                    <div class="lootCount">
+                        🎁
+                        ${DB.loot_items.filter(i => i.loot_source_id == source.id).length}
+                        Items
+                    </div>
+                </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+        /*=========================================
+            PART 2 FOUNDATION
+        =========================================*/
+        function getItem(id) {
+            return DB.items.find(item => item.id == id);
+        }
+        let currentLootSource = null;
+
+        function openLootSource(id) {
+            currentLootSource = id;
+            const source = DB.loot_sources.find(s => s.id == id);
+            const variation = DB.loot_items.filter(
+                l => l.loot_source_id == id
+            ).length;
+            let tool = "Hand";
+            if (source.required_item_id) {
+                const item = getItem(source.required_item_id);
+                if (item)
+                    tool = item.name;
+            }
+            document
+                .getElementById("gallerySection")
+                .style.display = "none";
+
+            document
+                .getElementById("detailSection")
+                .classList.add("show");
+
+            document.getElementById("detailTitle").innerHTML =
+                source.name;
+            document.getElementById("detailImage").src =
+                getImage(source.image);
+            document.getElementById("detailImage").onerror = function () {
+                this.src = "images/no-image.png";
+            };
+            document.getElementById("infoName").innerHTML =
+                source.name;
+            document.getElementById("infoVariation").innerHTML =
+                variation + " Items";
+            document.getElementById("infoTool").innerHTML =
+                tool;
+            const loots = DB.loot_items.filter(
+                l => l.loot_source_id == id
+            );
+            let html = "";
+            loots.forEach(l => {
+                const item = getItem(l.item_id);
+                if (!item) return;
+                html += `
+
+                    <div
+                    class="lootItem"
+                    onclick="showItem(${item.id},${l.chance},${l.quantity})">
+
+                    <img
+                    src="${getImage(item.image)}"
+                    onerror="this.src='images/no-image.png'">
+
+                    <h4>
+
+                    ${item.name}
+
+                    </h4>
+
+                    <div class="lootChance">
+
+                    🎲 ${l.chance}%
+
+                    </div>
+
+                    <div class="lootQuantity">
+
+                    📦 x${l.quantity}
+
+                    </div>
+
+                    <div class="lootExtra">
+
+                    Inventory
+
+                    ${item.inventory_size}
+
+                    </div>
+
+                    <div class="lootExtra">
+
+                    Weight
+
+                    ${item.weight}
+
+                    </div>
+
+                    </div>
+
+                    `;
+            });
+            document.getElementById("lootItemGrid").innerHTML =
+                html;
+        }
+        function showItem(id, chance, quantity) {
+            const item = getItem(id);
+            const source = DB.loot_sources.find(
+                s => s.id == currentLootSource
+            );
+            document.getElementById("popup").classList.remove("hidden");
+            document.getElementById("popupTitle").innerHTML = item.name;
+            document.getElementById("popupType").innerHTML =
+                "Loot Item";
+            document.getElementById("popupImage").src = getImage(item.image);
+            document.getElementById("popupImage").onerror = function () {
+                this.src = "images/no-image.png";
+            };
+            document.getElementById("popupChance").innerHTML =
+                chance + " %";
+            document.getElementById("popupSize").innerHTML =
+                item.inventory_size;
+            document.getElementById("popupWeight").innerHTML =
+                item.weight;
+            document.getElementById("popupQuantity").innerHTML =
+                "x" + quantity;
+            document.getElementById("popupFound").innerHTML =
+                source.name;
+        }
+        function closePopup() {
+            document
+                .getElementById("popup")
+                .classList.add("hidden");
+        }
+        function backHome() {
+
+            document
+                .getElementById("gallerySection")
+                .style.display = "block";
+
+            document
+                .getElementById("detailSection")
+                .classList.remove("show");
+
+        }
+        /*=========================================
+            SEARCH (UI ONLY)
+        =========================================*/
+        document
+            .getElementById("searchInput")
+            .addEventListener("input", function () {
+                const keyword = this.value.toLowerCase().trim();
+                if (keyword === "") {
+                    renderLootSources();
+                    return;
+                }
+                const matchedItems = DB.items.filter(item =>
+                    item.name.toLowerCase().includes(keyword)
+                );
+                if (matchedItems.length === 0) {
+                    document.getElementById("lootGrid").innerHTML = `
+            <div class="loading">
+                Item not found.
+            </div>
+        `;
+                    document.getElementById("totalSource").innerHTML = "0 Result";
+                    return;
+                }
+                const sourceIds = [];
+                matchedItems.forEach(item => {
+                    DB.loot_items.forEach(li => {
+                        if (li.item_id == item.id) {
+                            if (!sourceIds.includes(li.loot_source_id))
+                                sourceIds.push(li.loot_source_id);
+                        }
+                    });
+                });
+                const result = [];
+                sourceIds.forEach(id => {
+                    const s = DB.loot_sources.find(
+                        x => x.id == id
+                    );
+                    if (s)
+                        result.push(s);
+                });
+                let html = "";
+                result.forEach(source => {
+                    html += `
+        <div
+            class="lootCard"
+            onclick="openLootSource(${source.id})">
+            <div class="lootImage">
+                <img
+                    src="${getImage(source.image)}"
+                    onerror="this.src='images/no-image.png'">
+            </div>
+            <div class="lootName">
+                ${source.name}
+            </div>
+            <div class="lootCount">
+                🎁
+                ${DB.loot_items.filter(i => i.loot_source_id == source.id).length}
+                Items
+             </div>
+        </div>
+        `;
+                });
+                document.getElementById("lootGrid").innerHTML = html;
+                document.getElementById("totalSource").innerHTML =
+                    result.length + " Loot Sources";
+            });
+    </script>
+    <div class="popup hidden" id="popup">
+        <div class="popupBox">
+            <button class="closePopup" onclick="closePopup()">
+                ✕
+            </button>
+            <img id="popupImage">
+            <h2 id="popupTitle"></h2>
+            <p id="popupType"></p>
+            <div class="popupInfo">
+                <div class="popupRow">
+                    <span>Chance</span>
+                    <strong id="popupChance"></strong>
+                </div>
+                <div class="popupRow">
+                    <span>Inventory Size</span>
+                    <strong id="popupSize"></strong>
+                </div>
+                <div class="popupRow">
+                    <span>Weight</span>
+                    <strong id="popupWeight"></strong>
+                </div>
+
+                <div class="popupRow">
+
+                    <span>Quantity</span>
+
+                    <strong id="popupQuantity"></strong>
+
+                </div>
+            </div>
+            <div class="popupRow">
+                <span>Found In</span>
+                <strong id="popupFound"></strong>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

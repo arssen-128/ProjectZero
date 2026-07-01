@@ -1,0 +1,65 @@
+Mechanical Parts
+	Common
+		Broken Shovel.png
+		Broken Vape.png
+		Dirty Cloth.png
+		Empty Cans.png
+		Frame 84.png
+		Frame 90.png
+		Frayed Rope.png
+		Jumper Cables.png
+		Metal Beams.png
+		Metal Pipes.png
+		Oak Log.png
+		Old Shoes.png
+		Paper Scraps.png
+		Rebar.png
+		Rusty Nails.png
+		Rusty Pipe.png
+		Rusty Wrench.png
+		Shampoo Bottle.png
+		Stone.png
+		Tire Scraps.png
+		Watering Can.png
+	Epic
+		Air Bags.png
+		Broken ATM.png
+		Broken Gear.png
+		Gun Parts.png
+		Gunpowder.png
+		Hair Pick.png
+		Metal Shard.png
+		Old Wallet.png
+		PB Gloves.png
+		Phone Charger.png
+		Piece of Kevlar.png
+		Plate Holder.png
+	Mythic
+	Rare
+		6V Battery.png
+		9V Battery.png
+		Battery.png
+		Broken Radio.png
+		Crossbow.png
+		Ignition Module.png
+		Mixed Nuts.png
+		Rubber.png
+		Sewing Kit.png
+	Uncommon
+		Bolt.png
+		Broken Fuse.png
+		Cork.png
+		Door Kit.png
+		Duct Tape.png
+		Fabric.png
+		Fire Wick.png
+		Lighter.png
+		Metal Nuts.png
+		Oil Filter.png
+		Plastic.png
+		Rusty Pocket Knife.png
+		Rusty Screws.png
+		Scrap Metal.png
+		Spark Plugs.png
+		Tire Kit.png
+		Wire Scraps.png

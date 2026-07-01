@@ -1,0 +1,114 @@
+Rabbit Satay
+	Recipe
+	100g
+	5s
+	1x Bag of Rice
+	2x Raw Rabbit
+	2x Onion
+Coriander Chicken
+	Recipe
+	100g
+	5s
+	1x Bag of Flour
+	2x Garlic
+	2x Raw Chicken
+Juice Watermelon
+	Recipe
+	100g
+	5s
+	2x Water
+	3x Bag of Sugar
+	5x Watermelon
+Juice Corn
+	Recipe
+	100g
+	5s
+	2x Water
+	3x Bag of Sugar
+	5x Corn
+Meat Stew
+	Recipe
+	300g
+	10s
+	1x Raw Deer
+	2x Water
+	2x Bag of Rice
+	3x Onion
+	4x Bag of Flour
+	5x Carrot
+Salad
+	Recipe
+	150g
+	5s
+	5x Cucumber
+	5x Carrot
+	5x Corn
+Fish Pop
+	Recipe
+	150g
+	5s
+	2x Bag of Rice
+	3x Bag of Flour
+	3x Onion
+	4x Garlic
+	5x Small Fish
+Meat Stew
+	Recipe
+	300g
+	10s
+	1x Raw Boar
+	2x Water
+	2x Bag of Rice
+	3x Onion
+	4x Bag of Flour
+	5x Carrot
+Cooked Boar
+	Recipe
+	200g
+	5s
+	1x Raw Boar
+Fishy Fingers
+	Recipe
+	150g
+	5s
+	1x Bag of Rice
+	1x Bag of Flour
+	2x Big Fish
+Cooked Fish
+	Recipe
+	200g
+	5s
+	2x Small Fish
+Cooked Beef
+	Recipe
+	200g
+	5s
+	1x Raw Beef
+Cooked Chicken
+	Recipe
+	150g
+	10s	
+	1x Raw Chicken
+Cooked Rabbit
+	100g
+	10s
+	Recipe
+	1x Raw Rabbit
+Instant Nuts Drink
+	Recipe
+	100g
+	10s
+	1x Water
+	1x Bag of Flour
+	1x Bag of Sugar
+	3x Mixed Nuts
+Canteen
+	Recipe
+	200g
+	10s
+	1x Canteen
+Water
+	Recipe
+	500g
+	10s
+	1x Dirty Water

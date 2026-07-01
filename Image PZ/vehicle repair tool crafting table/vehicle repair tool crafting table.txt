@@ -1,0 +1,44 @@
+Screwdriver
+	Recipe
+	200g
+	10s
+	6x Plastic
+	8x Scrap Metal
+Socket Wrench
+	Recipe
+	500g
+	10s
+	6x Metal Nuts
+	8x Scrap Metal
+Wrench
+	Recipe
+	1.5kg
+	10s
+	1x Rusty Wrench
+	1x Duct Tape
+	1x Hammer
+	5x Scrap Metal
+Door Kit
+	Recipe
+	2.5kg
+	Repair your car's door
+	10s
+	2x Duct Tape
+	4x Metal Nuts
+	Sx Scrap Metal
+Tire Kit
+	Recipe
+	2.5kg
+	Repair your car's tire
+	10s
+	2x Duct Tape
+	4x Tire Scraps
+	5x Scrap Metal
+Repair Kit
+	Recipe
+	2.5kg
+	Repair your car's body and engine
+	10s
+	2x Duct Tape
+	6x Metal Nuts
+	8x Scrap Metal

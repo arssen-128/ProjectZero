@@ -1,0 +1,35 @@
+Crossbow Bolt
+	Recipe
+	4g
+	10s
+	1x Duct Tape
+	5x Scrap Metal
+	10x Rusty Nails
+Nail Ammo
+	Recipe
+	4g
+	10s
+	1x Duct Tape
+	5x Scrap Metal
+	10x Rusty Nails
+Crossbow
+	Recipe
+	2kg
+	10s
+	5x Duct Tape
+	20x Rubber
+	100x Scrap Metal
+Barb Wire
+	Recipe
+	2kg
+	10s
+	1x 2x4
+	10x Scrap Metal
+	10x Rusty Nails
+Nail Gun
+	Recipe
+	1kg
+	100s
+	5x Duct Tape
+	6x 9V Battery
+	100x Scrap Metal

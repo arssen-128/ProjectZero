@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Zombie Api Pesta Pora</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #090B0E; /* Background Brief */
+            color: #D4C9B8; /* Text Brief */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .card {
+            background-color: #141820; /* Card Brief */
+            border: 2px solid #5C0A0A; /* Blood Red Brief */
+            border-radius: 8px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 114, 42, 0.1);
+            position: relative;
+        }
+
+        /* Efek Kobaran Api di Background Card */
+        .fire-glow {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 140px;
+            color: #D4722A; /* Orange Brief */
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Kontainer untuk GIF Zombie Api */
+        .zombie-gif-container {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+
+        .zombie-gif {
+            width: 150px;
+            height: auto;
+            border-radius: 4px;
+            /* Memberikan efek glow warna orange api di sekitar zombie */
+            animation: fire-pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        .error-code {
+            font-size: 110px;
+            font-weight: 900;
+            color: #D4722A; /* Orange Brief */
+            text-shadow: 3px 3px 0px #5C0A0A, 5px 5px 15px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 5px;
+            letter-spacing: -2px;
+        }
+
+        h1 {
+            color: #D4C9B8; /* Text Brief */
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+            color: #D4C9B8;
+            opacity: 0.85;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #5C0A0A; /* Blood Red Brief */
+            color: #D4C9B8; /* Text Brief */
+            text-decoration: none;
+            padding: 12px 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            border: 2px solid #D4722A; /* Orange Brief Border */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            background-color: #D4722A; /* Orange Brief saat hover */
+            color: #090B0E; /* Text berubah gelap agar kontras */
+            border-color: #5C0A0A;
+            box-shadow: 0 0 20px rgba(212, 114, 42, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Animasi Aura Api di sekitar GIF */
+        @keyframes fire-pulse {
+            0% {
+                filter: drop-shadow(0 0 5px rgba(212, 114, 42, 0.5)) saturate(1.2);
+                transform: scale(0.98);
+            }
+            100% {
+                filter: drop-shadow(0 0 25px rgba(212, 114, 42, 0.9)) saturate(1.5);
+                transform: scale(1.02);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="fire-glow">🔥</div>
+        
+        <!-- Implementasi GIF Zombie Pesanan Anda -->
+        <div class="zombie-gif-container">
+            <img class="zombie-gif" src="https://media.tenor.com/KRRqIQsuEeEAAAAM/zombie-bailando.gif" alt="Zombie Api Menari">
+        </div>
+        
+        <div class="error-code">404</div>
+        <h1>Halaman Hangus Terbakar!</h1>
+        <p>Link yang Anda cari telah runtuh dan dibakar habis. Hanya tersisa zombie api yang sedang merayakan hilangnya halaman ini.</p>
+        
+        <a href="/" class="btn">Kembali ke Zona Aman</a>
+    </div>
+
+</body>
+</html>

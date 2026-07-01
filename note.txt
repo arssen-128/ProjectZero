@@ -1,0 +1,240 @@
+PROJECT CONTEXT
+You are NOT building a simple crafting page.
+You are building the official Project Zero Crafting Database.
+The goal is to create a professional interactive crafting encyclopedia similar to modern game databases, not a CRUD website.
+Everything must be driven by the database.
+Never hardcode recipes.
+Never hardcode stations.
+Never hardcode materials.
+The JSON/database is always the single source of truth.
+==========================================================
+PROJECT PHILOSOPHY
+A player should be able to understand an entire crafting chain in one screen.
+The player should never need to open 10 different pages just to understand how one item is crafted.
+Everything should feel like an interactive blueprint system.
+The application should feel closer to a game interface than a normal website.
+==========================================================
+USER FLOW
+HOME
+↓
+Crafting Station Gallery
+↓
+Select Station
+↓
+Station Detail
+↓
+Blueprint Workspace
+↓
+Select Craft Item
+↓
+Automatically Generate Full Recursive Tree
+↓
+Explore Crafting Chain
+==========================================================
+HOME PAGE
+The home page displays every Crafting Station.
+Each station is represented by a modern card.
+Each card contains
+- station image
+- station name
+- total recipes
+- small description
+- click animation
+When clicked
+Open Station Detail.
+==========================================================
+STATION DETAIL
+The Station Detail page contains
+Top
+- Back Button
+- Station Name
+- Station Description
+- Information Button
+Middle
+Blueprint Workspace
+Left
+Quick Recipe List
+Right
+Quick Recipe List
+The blueprint always stays in the center.
+==========================================================
+STATION INFORMATION POPUP
+Clicking the Information button opens a popup.
+The popup displays
+- Station Image
+- Station Name
+- Category
+- Map Image
+- Description
+- Total Recipes
+- Craftable Item Gallery
+All information comes directly from the database.
+Missing values must gracefully fallback.
+Never crash.
+==========================================================
+BLUEPRINT WORKSPACE
+The blueprint is the MOST IMPORTANT part of the application.
+The blueprint is NOT a list.
+It is a visual dependency graph.
+Every recipe is displayed as a crafting tree.
+Example
+Iron Axe
+↓
+Iron Ingot
+↓
+Iron Ore
+Coal
+Wood Handle
+↓
+Wood
+Rope
+↓
+Fiber
+Knife
+↓
+Stone
+The tree continues automatically.
+Unlimited recursion depth.
+==========================================================
+RECURSIVE RULES
+If a material has its own recipe
+Automatically expand it.
+If that recipe contains craftable materials
+Expand again.
+Continue recursively until reaching raw materials.
+Never require manual expansion.
+Everything must be generated automatically.
+==========================================================
+RAW MATERIAL
+A raw material is an item without any recipe.
+When no recipe exists
+Stop recursion.
+Display the raw material as the final leaf node.
+==========================================================
+LOOP PROTECTION
+Prevent
+A -> B -> C -> A
+using
+Visited Set.
+Never allow infinite recursion.
+Never duplicate recipes inside one branch.
+==========================================================
+TREE LAYOUT
+The blueprint must always look clean.
+Requirements
+- parent centered above children
+- equal spacing
+- no overlapping nodes
+- unlimited depth
+- automatic subtree sizing
+- professional tree layout
+Do not use hardcoded margins.
+==========================================================
+BLUEPRINT CAMERA
+The workspace supports
+- drag
+- zoom
+- reset zoom
+- center tree
+- fit tree
+Everything should remain smooth after rerender.
+==========================================================
+SVG CONNECTION
+Every parent node connects to every child.
+Connections update after
+- zoom
+- resize
+- rerender
+- collapse
+- expand
+Never leave orphan SVG lines.
+==========================================================
+MINIMAP
+The minimap displays the entire blueprint.
+It also shows
+Current viewport.
+Clicking the minimap moves the camera.
+==========================================================
+SEARCH
+Search is global.
+Search must include
+- recipe output
+- crafting material
+- crafting station
+- category
+- keyword
+When selecting a result
+Automatically
+Open Station
+↓
+Open Recipe
+↓
+Generate Blueprint
+↓
+Center Camera
+↓
+Highlight Node
+==========================================================
+NODE INTERACTION
+Clicking a node DOES NOT regenerate the blueprint.
+Instead
+- highlight node
+- center camera
+- open item popup
+The blueprint already contains the entire crafting tree.
+==========================================================
+ITEM POPUP
+Every item node can display
+- image
+- name
+- weight
+- inventory size
+- crafting quantity
+- recipe information
+Everything comes from the database.
+==========================================================
+DATABASE FIRST
+Never hardcode
+Station
+Recipe
+Material
+Map
+Category
+Description
+Everything must be read dynamically.
+If the database grows
+The application automatically supports new content without changing JavaScript.
+==========================================================
+ARCHITECTURE
+Keep logic separated.
+Database
+↓
+Index
+↓
+Recursive Engine
+↓
+Layout Engine
+↓
+Render Engine
+↓
+SVG Engine
+↓
+MiniMap
+↓
+Interaction
+↓
+UI
+Do not mix these layers.
+==========================================================
+GOAL
+Build a professional interactive crafting encyclopedia.
+The application should feel like a game development tool rather than a static website.
+Maintainable.
+Scalable.
+Database-driven.
+Fast.
+Clean.
+Every improvement you make must move the project toward this vision.
+Do not redesign the visual identity.
+Preserve the existing Project Zero theme.
+Improve logic, usability, performance, and interaction while keeping the same style.

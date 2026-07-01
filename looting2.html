@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Zero - Loot Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Segoe UI, Arial, sans-serif;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top, #1d2430 0%, #0b0d11 70%);
+            color: #ECECEC;
+            min-height: 100vh;
+        }
+
+        /*========================*/
+        .container {
+            width: min(1450px, 95%);
+            margin: auto;
+            padding: 40px 0 80px;
+        }
+
+        /*========================*/
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        header span {
+            color: #F59E0B;
+        }
+
+        header p {
+            margin-top: 10px;
+            color: #9CA3AF;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /*========================*/
+        .searchBox {
+            width: 700px;
+            max-width: 100%;
+            margin: auto;
+            margin-top: 35px;
+            position: relative;
+        }
+
+        .searchBox input {
+            width: 100%;
+            height: 60px;
+            border-radius: 16px;
+            border: 1px solid #323A45;
+            background: #171C24;
+            color: white;
+            font-size: 17px;
+            padding: 0 20px;
+            outline: none;
+            transition: .25s;
+        }
+
+        .searchBox input:focus {
+            border-color: #F59E0B;
+            box-shadow: 0 0 20px rgba(245, 158, 11, .18);
+        }
+
+        /*========================*/
+        .sectionTitle {
+            margin: 50px 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sectionTitle h2 {
+            font-size: 30px;
+        }
+
+        .sectionTitle span {
+            color: #8D97A5;
+        }
+
+        /*========================*/
+        .lootGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        /*========================*/
+        .lootCard {
+            background: #171C24;
+            border: 1px solid #2F3742;
+            border-radius: 18px;
+            padding: 20px;
+            cursor: pointer;
+            transition: .30s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lootCard:hover {
+            transform: translateY(-8px);
+            border-color: #F59E0B;
+            box-shadow:
+                0 18px 40px rgba(0, 0, 0, .45),
+                0 0 25px rgba(245, 158, 11, .20);
+        }
+
+        .lootCard::before {
+            content: "";
+            position: absolute;
+            left: -120%;
+            top: 0;
+            width: 55%;
+            height: 100%;
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, .08),
+                    transparent);
+            transition: .6s;
+        }
+
+        .lootCard:hover::before {
+            left: 150%;
+        }
+
+        /*========================*/
+        .lootImage {
+            width: 130px;
+            height: 130px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .lootImage img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+
+        /*========================*/
+        .lootName {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .lootCount {
+            margin-top: 10px;
+            color: #98A2AF;
+            font-size: 14px;
+        }
+
+        /*========================*/
+        .loading {
+            text-align: center;
+            padding: 100px;
+            font-size: 22px;
+            color: #A6AFBC;
+        }
+
+        /*========================*/
+        @media(max-width:900px) {
+            header h1 {
+                font-size: 38px;
+            }
+
+            .lootGrid {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            }
+        }
+
+        .backButton {
+            background: #F59E0B;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .detailWrapper {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .detailImage {
+            background: #171C24;
+            border: 1px solid #323A45;
+            border-radius: 18px;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .detailImage img {
+            width: 260px;
+            height: 260px;
+            object-fit: contain;
+        }
+
+        .detailInfo {
+            background: #171C24;
+            border: 1px solid #323A45;
+            border-radius: 18px;
+            padding: 30px;
+        }
+
+        .infoRow {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid #2F3742;
+        }
+
+        .infoRow:last-child {
+            border: none;
+        }
+
+        .infoRow label {
+            color: #9CA3AF;
+        }
+
+        .infoRow strong {
+            color: white;
+        }
+
+        .divider {
+            margin: 45px 0;
+            border: none;
+            border-top: 1px solid #313844;
+        }
+
+        .lootTitle {
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        .lootItemGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 20px;
+        }
+
+        .lootItem {
+            background: #171C24;
+            border: 1px solid #313844;
+            border-radius: 18px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .lootItem:hover {
+            border-color: #F59E0B;
+            transform: translateY(-6px);
+        }
+
+        .lootItem img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .lootItem h4 {
+            font-size: 18px;
+        }
+
+        .lootChance {
+
+            margin-top: 10px;
+
+            color: #F59E0B;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+        }
+
+        .lootQuantity {
+
+            margin-top: 6px;
+
+            color: #9CA3AF;
+
+            font-size: 13px;
+
+        }
+
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .popupBox {
+            width: 450px;
+            background: #171C24;
+            border: 1px solid #323A45;
+            border-radius: 22px;
+            padding: 35px;
+            position: relative;
+            text-align: center;
+        }
+
+        .popupBox img {
+            width: 170px;
+            height: 170px;
+            object-fit: contain;
+            margin: 25px auto;
+        }
+
+        .closePopup {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2B313B;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .closePopup:hover {
+            background: #F59E0B;
+        }
+
+        .popupInfo {
+            margin-top: 30px;
+        }
+
+        .popupRow {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #323A45;
+        }
+
+        .popupRow:last-child {
+            border: none;
+        }
+
+        .popup {
+            animation: fade .2s ease;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .popupBox {
+            animation: pop .25s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #detailSection {
+
+            display: none;
+
+            margin-top: 40px;
+
+            animation: fade .25s;
+
+        }
+
+        #detailSection.show {
+
+            display: block;
+
+        }
+
+        #gallerySection {
+            transition: .35s ease;
+        }
+
+        #gallerySection.hide {
+            opacity: 0;
+            transform: translateX(-80px);
+            pointer-events: none;
+        }
+
+        .lootExtra {
+
+            margin-top: 6px;
+
+            font-size: 12px;
+
+            color: #A8B0BC;
+        }
+
+        #popupType {
+
+            margin-top: -10px;
+
+            margin-bottom: 20px;
+
+            color: #F59E0B;
+
+            font-size: 14px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="gallerySection">
+            <header>
+                <h1>
+                    LOOT <span>DATABASE</span>
+                </h1>
+                <p>
+                    Browse every Loot Source available in Project Zero.<br>
+                    Discover where every item can be obtained throughout the world.
+                </p>
+                <div class="searchBox">
+                    <input type="text" id="searchInput" placeholder="Search Item (Plastic, Bolt, Fabric...)">
+                </div>
+            </header>
+            <div class="sectionTitle">
+                <h2>
+                    Loot Sources
+                </h2>
+                <span id="totalSource">
+                    Loading...
+                </span>
+            </div>
+            <div class="lootGrid" id="lootGrid">
+                <div class="loading">
+                    Loading Loot Sources...
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================================-->
+    <div id="detailSection">
+        <button class="backButton" onclick="backHome()">
+            ← Back
+        </button>
+        <h1 id="detailTitle">
+        </h1>
+        <div class="detailWrapper">
+            <div class="detailImage">
+                <img id="detailImage">
+            </div>
+            <div class="detailInfo">
+                <div class="infoRow">
+                    <label>Name</label>
+                    <strong id="infoName"></strong>
+                </div>
+                <div class="infoRow">
+                    <label>Variation</label>
+                    <strong id="infoVariation"></strong>
+                </div>
+                <div class="infoRow">
+                    <label>Required Tool</label>
+                    <strong id="infoTool"></strong>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <h2 class="lootTitle">
+
+            Possible Loot
+
+        </h2>
+
+        <div class="lootItemGrid" id="lootItemGrid">
+
+        </div>
+
+    </div>
+
+    <script>
+        const DB = {};
+        function getImage(path) {
+            if (!path)
+                return "images/no-image.png";
+            return "images/" + path;
+        }
+        fetch("project_zero.json")
+            .then(res => res.json())
+            .then(data => {
+
+                data.forEach(table => {
+
+                    if (table.type === "table") {
+
+                        DB[table.name] = table.data;
+
+                    }
+
+                });
+
+                console.log(DB);
+                console.log(DB.items);
+                console.log(DB.loot_sources);
+                console.log(DB.loot_items);
+                renderLootSources();
+
+            })
+            .catch(err => console.error(err));
+        function renderLootSources() {
+            const grid = document.getElementById("lootGrid");
+            document.getElementById("totalSource").innerHTML =
+                DB.loot_sources.length + " Loot Sources";
+            let html = "";
+            DB.loot_sources.forEach(source => {
+                html += `
+                <div
+                    class="lootCard"
+                    onclick="openLootSource(${source.id})">
+                    <div class="lootImage">
+                        <img
+                            src="${getImage(source.image)}"
+                            onerror="this.src='images/no-image.png'">
+                    </div>
+                    <div class="lootName">
+                        ${source.name}
+                    </div>
+                    <div class="lootCount">
+                        🎁
+                        ${DB.loot_items.filter(i => i.loot_source_id == source.id).length}
+                        Items
+                    </div>
+                </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+        /*=========================================
+            PART 2 FOUNDATION
+        =========================================*/
+        function getItem(id) {
+            return DB.items.find(item => item.id == id);
+        }
+        let currentLootSource = null;
+
+        function openLootSource(id) {
+            currentLootSource = id;
+            const source = DB.loot_sources.find(s => s.id == id);
+            const variation = DB.loot_items.filter(
+                l => l.loot_source_id == id
+            ).length;
+            let tool = "Hand";
+            if (source.required_item_id) {
+                const item = getItem(source.required_item_id);
+                if (item)
+                    tool = item.name;
+            }
+            document
+                .getElementById("gallerySection")
+                .style.display = "none";
+
+            document
+                .getElementById("detailSection")
+                .classList.add("show");
+
+            document.getElementById("detailTitle").innerHTML =
+                source.name;
+            document.getElementById("detailImage").src =
+                getImage(source.image);
+            document.getElementById("detailImage").onerror = function () {
+                this.src = "images/no-image.png";
+            };
+            document.getElementById("infoName").innerHTML =
+                source.name;
+            document.getElementById("infoVariation").innerHTML =
+                variation + " Items";
+            document.getElementById("infoTool").innerHTML =
+                tool;
+            const loots = DB.loot_items.filter(
+                l => l.loot_source_id == id
+            );
+            let html = "";
+            loots.forEach(l => {
+                const item = getItem(l.item_id);
+                if (!item) return;
+                html += `
+
+                    <div
+                    class="lootItem"
+                    onclick="showItem(${item.id},${l.chance},${l.quantity})">
+
+                    <img
+                    src="${getImage(item.image)}"
+                    onerror="this.src='images/no-image.png'">
+
+                    <h4>
+
+                    ${item.name}
+
+                    </h4>
+
+                    <div class="lootChance">
+
+                    🎲 ${l.chance}%
+
+                    </div>
+
+                    <div class="lootQuantity">
+
+                    📦 x${l.quantity}
+
+                    </div>
+
+                    <div class="lootExtra">
+
+                    Inventory
+
+                    ${item.inventory_size}
+
+                    </div>
+
+                    <div class="lootExtra">
+
+                    Weight
+
+                    ${item.weight}
+
+                    </div>
+
+                    </div>
+
+                    `;
+            });
+            document.getElementById("lootItemGrid").innerHTML =
+                html;
+        }
+        function showItem(id, chance, quantity) {
+            const item = getItem(id);
+            const source = DB.loot_sources.find(
+                s => s.id == currentLootSource
+            );
+            document.getElementById("popup").classList.remove("hidden");
+            document.getElementById("popupTitle").innerHTML = item.name;
+            document.getElementById("popupType").innerHTML =
+                "Loot Item";
+            document.getElementById("popupImage").src = getImage(item.image);
+            document.getElementById("popupImage").onerror = function () {
+                this.src = "images/no-image.png";
+            };
+            document.getElementById("popupChance").innerHTML =
+                chance + " %";
+            document.getElementById("popupSize").innerHTML =
+                item.inventory_size;
+            document.getElementById("popupWeight").innerHTML =
+                item.weight;
+            document.getElementById("popupQuantity").innerHTML =
+                "x" + quantity;
+            document.getElementById("popupFound").innerHTML =
+                source.name;
+        }
+        function closePopup() {
+            document
+                .getElementById("popup")
+                .classList.add("hidden");
+        }
+        function backHome() {
+
+            document
+                .getElementById("gallerySection")
+                .style.display = "block";
+
+            document
+                .getElementById("detailSection")
+                .classList.remove("show");
+
+        }
+        /*=========================================
+            SEARCH (UI ONLY)
+        =========================================*/
+        document
+            .getElementById("searchInput")
+            .addEventListener("input", function () {
+                const keyword = this.value.toLowerCase().trim();
+                if (keyword === "") {
+                    renderLootSources();
+                    return;
+                }
+                const matchedItems = DB.items.filter(item =>
+                    item.name.toLowerCase().includes(keyword)
+                );
+                if (matchedItems.length === 0) {
+                    document.getElementById("lootGrid").innerHTML = `
+            <div class="loading">
+                Item not found.
+            </div>
+        `;
+                    document.getElementById("totalSource").innerHTML = "0 Result";
+                    return;
+                }
+                const sourceIds = [];
+                matchedItems.forEach(item => {
+                    DB.loot_items.forEach(li => {
+                        if (li.item_id == item.id) {
+                            if (!sourceIds.includes(li.loot_source_id))
+                                sourceIds.push(li.loot_source_id);
+                        }
+                    });
+                });
+                const result = [];
+                sourceIds.forEach(id => {
+                    const s = DB.loot_sources.find(
+                        x => x.id == id
+                    );
+                    if (s)
+                        result.push(s);
+                });
+                let html = "";
+                result.forEach(source => {
+                    html += `
+        <div
+            class="lootCard"
+            onclick="openLootSource(${source.id})">
+            <div class="lootImage">
+                <img
+                    src="${getImage(source.image)}"
+                    onerror="this.src='images/no-image.png'">
+            </div>
+            <div class="lootName">
+                ${source.name}
+            </div>
+            <div class="lootCount">
+                🎁
+                ${DB.loot_items.filter(i => i.loot_source_id == source.id).length}
+                Items
+             </div>
+        </div>
+        `;
+                });
+                document.getElementById("lootGrid").innerHTML = html;
+                document.getElementById("totalSource").innerHTML =
+                    result.length + " Loot Sources";
+            });
+    </script>
+    <div class="popup hidden" id="popup">
+        <div class="popupBox">
+            <button class="closePopup" onclick="closePopup()">
+                ✕
+            </button>
+            <img id="popupImage">
+            <h2 id="popupTitle"></h2>
+            <p id="popupType"></p>
+            <div class="popupInfo">
+                <div class="popupRow">
+                    <span>Chance</span>
+                    <strong id="popupChance"></strong>
+                </div>
+                <div class="popupRow">
+                    <span>Inventory Size</span>
+                    <strong id="popupSize"></strong>
+                </div>
+                <div class="popupRow">
+                    <span>Weight</span>
+                    <strong id="popupWeight"></strong>
+                </div>
+
+                <div class="popupRow">
+
+                    <span>Quantity</span>
+
+                    <strong id="popupQuantity"></strong>
+
+                </div>
+            </div>
+            <div class="popupRow">
+                <span>Found In</span>
+                <strong id="popupFound"></strong>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Zero - Crafting Database</title>
+    <style>
+        /* Layout */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Segoe UI, Arial, sans-serif;
+        }
+        body {
+            background:
+                radial-gradient(circle at top, #1d2430 0%, #0b0d11 70%);
+            color: #ECECEC;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            width: min(1500px, 95%);
+            margin: auto;
+            padding: 45px 0 80px;
+        }
+        .hidden {
+            display: none;
+        }
+        .loading {
+            padding: 100px;
+            text-align: center;
+            font-size: 24px;
+            color: #9CA3AF;
+        }
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        header h1 {
+            font-size: 58px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        header span {
+            color: #F59E0B;
+        }
+        header p {
+            margin-top: 14px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #98A2AF;
+        }
+        .searchBox {
+            width: 720px;
+            max-width: 100%;
+            margin: 35px auto 0;
+            position: relative;
+        }
+        .searchBox input {
+            width: 100%;
+            height: 62px;
+            background: #171C24;
+            border: 1px solid #313844;
+            border-radius: 18px;
+            padding: 0 24px;
+            font-size: 17px;
+            color: white;
+            outline: none;
+            transition: .3s;
+        }
+        .searchBox input:focus {
+            border-color: #F59E0B;
+            box-shadow: 0 0 22px rgba(245, 158, 11, .22);
+        }
+        /* Station Filter */
+        .stationFilter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 35px 0 45px;
+            flex-wrap: wrap;
+        }
+        .filterBtn {
+            padding: 12px 22px;
+            border-radius: 12px;
+            background: #171C24;
+            border: 1px solid #313844;
+            cursor: pointer;
+            transition: .25s;
+            font-size: 15px;
+            color: #D8D8D8;
+        }
+        .filterBtn:hover {
+            border-color: #F59E0B;
+            background: #222A34;
+        }
+        .filterBtn.active {
+            background: #F59E0B;
+            color: white;
+            border-color: #F59E0B;
+        }
+        /* Station Card */
+        .sectionTitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+        .sectionTitle h2 {
+            font-size: 34px;
+        }
+        .sectionTitle span {
+            color: #8D97A5;
+            font-size: 16px;
+        }
+        .stationGrid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+        .stationCard {
+            background: #171C24;
+            border: 1px solid #313844;
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: .3s;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .stationCard::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -140%;
+            width: 60%;
+            height: 100%;
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, .08),
+                    transparent);
+            transition: .6s;
+        }
+        .stationCard:hover::before {
+            left: 170%;
+        }
+        .stationCard:hover {
+            transform: translateY(-8px);
+            border-color: #F59E0B;
+            box-shadow:
+                0 22px 45px rgba(0, 0, 0, .45),
+                0 0 22px rgba(245, 158, 11, .20);
+        }
+        .stationImage {
+            width: 150px;
+            height: 150px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .stationImage img {
+            width: 140px;
+            height: 140px;
+            object-fit: contain;
+        }
+        .stationName {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .stationRecipe {
+            font-size: 15px;
+            color: #AAB3BF;
+        }
+        /* Detail */
+        .detailHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .detailHeader h1 {
+            font-size: 42px;
+        }
+        .detailHeader p {
+            margin-top: 8px;
+            color: #9CA3AF;
+        }
+        .infoButton {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            background: #F59E0B;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .infoButton:hover {
+            transform: scale(1.08);
+        }
+        .craftLayout {
+            display: grid;
+            grid-template-columns: 260px 1fr 260px;
+            gap: 25px;
+            margin-top: 35px;
+        }
+        .leftPanel,
+        .rightPanel {
+            background: #171C24;
+            border: 1px solid #313844;
+            border-radius: 18px;
+            padding: 20px;
+        }
+        .leftPanel h3,
+        .rightPanel h3 {
+            margin-bottom: 18px;
+        }
+        .itemList {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 700px;
+            overflow: auto;
+            padding-right: 5px;
+        }
+        .itemCard {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #202832;
+            border: 1px solid #313844;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .itemCard:hover {
+            border-color: #F59E0B;
+            transform: translateX(5px);
+        }
+        .itemCard img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+        }
+        /* Blueprint */
+        .blueprintBoard {
+            background: #4A3724;
+            border-radius: 20px;
+            padding: 30px;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .04) 1px,
+                    transparent 1px),
+                linear-gradient(90deg,
+                    rgba(255, 255, 255, .04) 1px,
+                    transparent 1px);
+            background-size: 25px 25px;
+            border: 8px solid #2D2218;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+        }
+        .blueprintPaper {
+            background: #D9C49A;
+            border-radius: 12px;
+            flex: 1;
+            padding: 0;
+            box-shadow:
+                inset 0 0 20px rgba(0, 0, 0, .2);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Blueprint placeholder (no recipe selected) */
+        #blueprintPlaceholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            flex-direction: column;
+            text-align: center;
+            color: #2B2B2B;
+            padding: 40px;
+        }
+        #blueprintPlaceholder h2 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+        #blueprintPlaceholder p {
+            font-size: 18px;
+        }
+        /* Blueprint scrollable canvas wrapper */
+        .blueprintWrapper {
+            position: relative;
+            overflow: auto;
+            width: 100%;
+            height: 100%;
+            min-height: 660px;
+            border-radius: 12px;
+            cursor: grab;
+            display: none;
+        }
+        .blueprintCanvas {
+            position: relative;
+            min-width: 1800px;
+            min-height: 1200px;
+            transform-origin: top left;
+            transition: .15s;
+        }
+        #treeSVG {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        /* Zoom tools — inside blueprint board toolbar */
+        .blueprintToolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0 14px;
+        }
+        .zoomTools {
+            display: flex;
+            gap: 8px;
+        }
+        .zoomBtn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            background: #171C24;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: .2s;
+        }
+        .zoomBtn:hover {
+            background: #F59E0B;
+        }
+        .treeToolbar {
+            display: flex;
+            gap: 10px;
+        }
+        .toolBtn {
+            background: #171C24;
+            border: 1px solid #313844;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .25s;
+            color: #ECECEC;
+            font-size: 14px;
+        }
+        .toolBtn:hover {
+            background: #F59E0B;
+            border-color: #F59E0B;
+        }
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            font-size: 15px;
+            color: #9CA3AF;
+        }
+        .breadcrumb span {
+            cursor: pointer;
+            transition: .2s;
+        }
+        .breadcrumb span:hover {
+            color: #F59E0B;
+        }
+        /* Mini Map — positioned inside blueprintBoard */
+        .miniMap {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            width: 200px;
+            height: 135px;
+            background: #171C24;
+            border: 1px solid #313844;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, .35);
+            z-index: 100;
+        }
+        .miniHeader {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            background: #222A34;
+            border-bottom: 1px solid #313844;
+        }
+        .miniCanvas {
+            position: relative;
+            width: 100%;
+            height: 105px;
+            background: #10151B;
+        }
+        .miniNode {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #F59E0B;
+            border-radius: 50%;
+        }
+        .recipeItem {
+            width: 170px;
+            background: white;
+            border-radius: 15px;
+            padding: 16px;
+            text-align: center;
+            box-shadow:
+                0 10px 22px rgba(0, 0, 0, .18);
+            cursor: pointer;
+            transition: .25s;
+            position: relative;
+            z-index: 5;
+        }
+        .recipeItem:hover {
+            transform: translateY(-6px);
+            box-shadow:
+                0 18px 35px rgba(0, 0, 0, .22);
+        }
+        .recipeItem img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .recipeItem h4 {
+            font-size: 15px;
+            color: #222;
+            margin-bottom: 8px;
+        }
+        .recipeItem span {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #F59E0B;
+            border-radius: 20px;
+            font-size: 13px;
+            color: white;
+            font-weight: bold;
+        }
+        .recipeColumn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+        }
+        .focusNode {
+            outline: 5px solid rgba(245, 158, 11, .45);
+            border-radius: 16px;
+            animation: focusPulse .8s infinite alternate;
+        }
+        @keyframes focusPulse {
+            from { transform: scale(1); }
+            to   { transform: scale(1.04); }
+        }
+        .highlight {
+            outline: 4px solid #F59E0B;
+            animation: pulse .8s infinite alternate;
+        }
+        @keyframes pulse {
+            from { box-shadow: 0 0 0 rgba(245, 158, 11, .2); }
+            to   { box-shadow: 0 0 35px rgba(245, 158, 11, .55); }
+        }
+        /* Search Result */
+        .searchResult {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            width: 100%;
+            background: #171C24;
+            border: 1px solid #323A45;
+            border-radius: 14px;
+            overflow: hidden;
+            z-index: 999;
+            max-height: 450px;
+            overflow-y: auto;
+            display: none;
+        }
+        .searchItem {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 18px;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .searchItem:hover {
+            background: #222A34;
+        }
+        .searchItem img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+        }
+        .searchItem h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .searchItem small {
+            color: #9CA3AF;
+        }
+        /* Popup */
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .popupBox {
+            background: #171C24;
+            border: 1px solid #313844;
+            border-radius: 20px;
+            padding: 35px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .stationBox {
+            width: 900px;
+            max-width: 95vw;
+        }
+        .closePopup {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #313844;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: .2s;
+        }
+        .closePopup:hover {
+            background: #F59E0B;
+        }
+        .popupInfo {
+            margin: 18px 0;
+            text-align: left;
+        }
+        .popupRow {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #1e2530;
+            gap: 20px;
+        }
+        .popupRow span {
+            color: #9CA3AF;
+        }
+        .divider {
+            border: none;
+            border-top: 1px solid #313844;
+            margin: 20px 0;
+        }
+        .stationCraftGrid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            max-height: 350px;
+            overflow: auto;
+        }
+        .stationCraftCard {
+            background: #202832;
+            border: 1px solid #313844;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .stationCraftCard:hover {
+            border-color: #F59E0B;
+            transform: translateY(-5px);
+        }
+        .stationCraftCard img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            margin: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .stationCraftCard h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        /* Back button */
+        .backButton {
+            background: #171C24;
+            border: 1px solid #313844;
+            color: #ECECEC;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: .2s;
+            margin-bottom: 20px;
+        }
+        .backButton:hover {
+            background: #F59E0B;
+            border-color: #F59E0B;
+        }
+        /* Craft Detail page wrapper */
+        #craftDetail {
+            width: min(1500px, 95%);
+            margin: auto;
+            padding: 45px 0 80px;
+        }
+        /* Responsive */
+        @media(max-width:1200px) {
+            .craftLayout {
+                grid-template-columns: 1fr;
+            }
+            .leftPanel,
+            .rightPanel {
+                order: 2;
+            }
+            .centerPanel {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════
+         HOME PAGE
+    ═══════════════════════════════════════════════ -->
+    <div class="container" id="homePage">
+        <header>
+            <h1>CRAFTING <span>DATABASE</span></h1>
+            <p>
+                Browse every Crafting Station available in Project Zero.<br>
+                Discover every crafting recipe and production chain.
+            </p>
+            <div class="searchBox">
+                <input id="searchInput" placeholder="Search Craft Item (Iron Ingot, Bandage, Axe...)">
+                <div class="searchResult" id="searchResult"></div>
+            </div>
+        </header>
+        <div class="stationFilter">
+            <button class="filterBtn active">All</button>
+            <button class="filterBtn">Industrial</button>
+            <button class="filterBtn">Cooking</button>
+            <button class="filterBtn">Medical</button>
+            <button class="filterBtn">Survival</button>
+        </div>
+        <div class="sectionTitle">
+            <h2>Crafting Stations</h2>
+            <span id="totalStation">Loading...</span>
+        </div>
+        <div class="stationGrid" id="stationGrid">
+            <div class="loading">Loading Crafting Stations...</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         CRAFT DETAIL PAGE  (hidden by default)
+    ═══════════════════════════════════════════════ -->
+    <div id="craftDetail" class="hidden">
+        <button class="backButton" onclick="backHome()">← Back</button>
+
+        <div class="detailHeader">
+            <div>
+                <h1 id="detailStationName">Station</h1>
+                <p id="detailStationSubtitle">Crafting Station</p>
+            </div>
+            <button class="infoButton" onclick="showStationInfo()">ⓘ</button>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb" id="breadcrumb">
+            <span onclick="reloadStation()">Crafting Station</span>
+        </div>
+
+        <div class="craftLayout">
+
+            <!-- Left Panel -->
+            <div class="leftPanel">
+                <h3>Craftable Items</h3>
+                <div id="leftItemList" class="itemList"></div>
+            </div>
+
+            <!-- Center Panel — Blueprint Board -->
+            <div class="centerPanel">
+                <div class="blueprintBoard">
+
+                    <!-- Toolbar: breadcrumb / zoom / tools — only inside blueprint -->
+                    <div class="blueprintToolbar">
+                        <div class="zoomTools">
+                            <button class="zoomBtn" onclick="zoomIn()">+</button>
+                            <button class="zoomBtn" onclick="zoomOut()">−</button>
+                            <button class="zoomBtn" onclick="resetZoom()">⌂</button>
+                        </div>
+                        <div class="treeToolbar">
+                            <button class="toolBtn" onclick="expandAll()">Expand All</button>
+                            <button class="toolBtn" onclick="collapseTree()">Collapse</button>
+                            <button class="toolBtn" onclick="centerTree()">Center</button>
+                        </div>
+                    </div>
+
+                    <!-- Blueprint Paper (contains EITHER placeholder OR scrollable canvas) -->
+                    <div class="blueprintPaper" id="blueprintPaper">
+
+                        <!-- Placeholder shown when no recipe is selected -->
+                        <div id="blueprintPlaceholder">
+                            <h2>Select Item</h2>
+                            <p>Choose one item from the left panel.</p>
+                        </div>
+
+                        <!-- Scrollable canvas — hidden until a recipe is loaded -->
+                        <div class="blueprintWrapper" id="blueprintWrapper">
+                            <div class="blueprintCanvas" id="blueprintCanvas">
+                                <svg id="treeSVG"></svg>
+                            </div>
+                        </div>
+
+                        <!-- Mini Map inside the paper -->
+                        <div class="miniMap" id="miniMap" style="display:none;">
+                            <div class="miniHeader">Blueprint Map</div>
+                            <div class="miniCanvas" id="miniCanvas"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="rightPanel">
+                <h3>Quick Select</h3>
+                <div id="rightItemList" class="itemList"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         STATION INFO POPUP
+    ═══════════════════════════════════════════════ -->
+    <div class="popup hidden" id="stationPopup">
+        <div class="popupBox stationBox">
+            <button class="closePopup" onclick="closeStationPopup()">✕</button>
+            <img id="stationPopupImage" style="width:100px;height:100px;object-fit:contain;margin-bottom:15px;" alt="">
+            <h2 id="stationPopupName"></h2>
+            <p id="stationPopupCategory" style="color:#9CA3AF;margin-top:6px;"></p>
+            <div class="popupInfo">
+                <div class="popupRow">
+                    <span>Total Recipes</span>
+                    <strong id="stationPopupRecipe"></strong>
+                </div>
+                <div class="popupRow">
+                    <span>Map</span>
+                    <strong id="stationPopupMap"></strong>
+                </div>
+                <div class="popupRow">
+                    <span>Description</span>
+                    <strong id="stationPopupDesc"></strong>
+                </div>
+            </div>
+            <hr class="divider">
+            <h3>Craftable Items</h3>
+            <div class="stationCraftGrid" id="stationCraftGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        /* ===============================
+           GLOBAL STATE
+        =============================== */
+        const DB                    = {};
+        const ItemIndex             = {};
+        const RecipeIndex           = {};
+        const StationIndex          = {};
+        const RecipesByStationIndex = {};
+        const RecipeMaterialsIndex  = {};
+        const RecipeByOutputItemIndex = {};
+
+        let currentStation  = null;
+        let zoom            = 1;
+        let drag            = false;
+        let sx              = 0;
+        let sy              = 0;
+
+        /* ── DOM references (each ID exists exactly once) ── */
+        const homePage           = document.getElementById("homePage");
+        const craftDetail        = document.getElementById("craftDetail");
+        const searchInput        = document.getElementById("searchInput");
+        const searchResult       = document.getElementById("searchResult");
+        const stationGrid        = document.getElementById("stationGrid");
+        const totalStation       = document.getElementById("totalStation");
+        const leftItemList       = document.getElementById("leftItemList");
+        const rightItemList      = document.getElementById("rightItemList");
+        const detailStationName  = document.getElementById("detailStationName");
+        const detailStationSubtitle = document.getElementById("detailStationSubtitle");
+        const breadcrumb         = document.getElementById("breadcrumb");
+        const blueprintPaper     = document.getElementById("blueprintPaper");
+        const blueprintWrapper   = document.getElementById("blueprintWrapper");
+        const blueprintCanvas    = document.getElementById("blueprintCanvas");
+        const treeSVG            = document.getElementById("treeSVG");
+        const miniMap            = document.getElementById("miniMap");
+        const miniCanvas         = document.getElementById("miniCanvas");
+        const blueprintPlaceholder = document.getElementById("blueprintPlaceholder");
+        const stationPopup       = document.getElementById("stationPopup");
+        const stationPopupImage  = document.getElementById("stationPopupImage");
+        const stationPopupName   = document.getElementById("stationPopupName");
+        const stationPopupCategory = document.getElementById("stationPopupCategory");
+        const stationPopupRecipe = document.getElementById("stationPopupRecipe");
+        const stationPopupMap    = document.getElementById("stationPopupMap");
+        const stationPopupDesc   = document.getElementById("stationPopupDesc");
+        const stationCraftGrid   = document.getElementById("stationCraftGrid");
+
+        /* ===============================
+           DATABASE LOADER
+        =============================== */
+        fetch("project_zero.json")
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(table => {
+                    if (table.type === "table") {
+                        DB[table.name] = table.data;
+                    }
+                });
+                if (DB.items) {
+                    DB.items.forEach(item => { ItemIndex[item.id] = item; });
+                }
+                if (DB.recipes) {
+                    DB.recipes.forEach(recipe => {
+                        RecipeIndex[recipe.id] = recipe;
+                        RecipeByOutputItemIndex[recipe.output_item_id] = recipe;
+                        if (!RecipesByStationIndex[recipe.station_id]) {
+                            RecipesByStationIndex[recipe.station_id] = [];
+                        }
+                        RecipesByStationIndex[recipe.station_id].push(recipe);
+                    });
+                }
+                if (DB.crafting_stations) {
+                    DB.crafting_stations.forEach(station => {
+                        StationIndex[station.id] = station;
+                    });
+                }
+                if (DB.recipe_materials) {
+                    DB.recipe_materials.forEach(mat => {
+                        if (!RecipeMaterialsIndex[mat.recipe_id]) {
+                            RecipeMaterialsIndex[mat.recipe_id] = [];
+                        }
+                        RecipeMaterialsIndex[mat.recipe_id].push(mat);
+                    });
+                }
+                renderStations();
+            })
+            .catch(err => console.error("DB load error:", err));
+
+        /* ===============================
+           UTILITY
+        =============================== */
+        const PLACEHOLDER_SVG = "data:image/svg+xml," + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
+            '<rect fill="#313844" width="100" height="100"/>' +
+            '<text x="50" y="55" text-anchor="middle" fill="#9CA3AF" font-size="14">?</text></svg>'
+        );
+
+        function isValidImagePath(path) {
+            if (path == null || path === undefined) return false;
+            if (typeof path !== "string") return false;
+            const trimmed = path.trim();
+            if (trimmed === "") return false;
+            if (/[\/\\]|\.\./.test(trimmed)) return false;
+            return true;
+        }
+
+        function getImage(path) {
+            if (!isValidImagePath(path)) return PLACEHOLDER_SVG;
+            return "images/" + path.trim();
+        }
+
+        function handleImageError(img) {
+            if (img.dataset.fallback === "1") {
+                img.onerror = null;
+                img.remove();
+                return;
+            }
+            img.dataset.fallback = "1";
+            img.onerror = function () { handleImageError(this); };
+            img.src = PLACEHOLDER_SVG;
+        }
+
+        function setImageSrc(img, path) {
+            img.dataset.fallback = "";
+            img.onerror = function () { handleImageError(this); };
+            img.src = getImage(path);
+        }
+
+        function imgHtml(path) {
+            const src = getImage(path);
+            return `<img src="${src}" onerror="handleImageError(this)" alt="">`;
+        }
+
+        function stationField(station, field, fallback) {
+            const val = station[field];
+            if (val == null || (typeof val === "string" && val.trim() === "")) return fallback;
+            return val;
+        }
+
+        /* ===============================
+           HELPER LOOKUPS
+        =============================== */
+        function getItem(id)                { return ItemIndex[id]; }
+        function getRecipe(id)              { return RecipeIndex[id]; }
+        function getStation(id)             { return StationIndex[id]; }
+        function getRecipesByStation(sid)   { return RecipesByStationIndex[sid] || []; }
+        function getRecipeMaterials(rid)    { return RecipeMaterialsIndex[rid] || []; }
+        function getRecipeByOutputItem(id)  { return RecipeByOutputItemIndex[id]; }
+
+        /* ===============================
+           RENDER STATIONS (HOME)
+        =============================== */
+        function renderStations() {
+            const stations = DB.crafting_stations || [];
+            totalStation.innerHTML = stations.length + " Stations";
+            let html = "";
+            stations.forEach(station => {
+                const totalRecipe = getRecipesByStation(station.id).length;
+                html += `
+<div class="stationCard" onclick="openCraftStation(${station.id})">
+    <div class="stationImage">
+        ${imgHtml(station.image)}
+    </div>
+    <div class="stationName">${station.name}</div>
+    <div class="stationRecipe">${totalRecipe} Crafting Recipes</div>
+</div>`;
+            });
+            stationGrid.innerHTML = html || '<div class="loading">No stations found.</div>';
+        }
+
+        /* ===============================
+           OPEN CRAFT STATION (DETAIL PAGE)
+        =============================== */
+        function openCraftStation(id) {
+            closeStationPopup();
+            currentStation = id;
+            homePage.classList.add("hidden");
+            craftDetail.classList.remove("hidden");
+
+            const station = getStation(id);
+            if (!station) return;
+
+            detailStationName.innerHTML    = station.name;
+            detailStationSubtitle.innerHTML = "Crafting Station";
+
+            breadcrumb.innerHTML = `<span onclick="reloadStation()">${station.name}</span>`;
+
+            const recipes = getRecipesByStation(id);
+            let leftHTML = "";
+            let rightHTML = "";
+            recipes.forEach(recipe => {
+                const item = getItem(recipe.output_item_id);
+                if (!item) return;
+                const card = `
+<div class="itemCard" onclick="loadRecipe(${recipe.id})">
+    ${imgHtml(item.image)}
+    <div><b>${item.name}</b><br><small>Craft Item</small></div>
+</div>`;
+                leftHTML  += card;
+                rightHTML += card;
+            });
+            leftItemList.innerHTML  = leftHTML;
+            rightItemList.innerHTML = rightHTML;
+
+            _clearBlueprint();
+            showBlueprintPlaceholder();
+        }
+
+        /* ===============================
+           SHOW / HIDE BLUEPRINT STATES
+        =============================== */
+        function showBlueprintPlaceholder() {
+            blueprintPlaceholder.style.display = "";
+            blueprintWrapper.style.display      = "none";
+            miniMap.style.display               = "none";
+            treeSVG.innerHTML                   = "";
+            miniCanvas.innerHTML                = "";
+        }
+
+        function showBlueprintCanvas() {
+            blueprintPlaceholder.style.display = "none";
+            blueprintWrapper.style.display      = "";
+            miniMap.style.display               = "";
+        }
+
+        /* ===============================
+           NAVIGATION
+        =============================== */
+        function backHome() {
+            _clearBlueprint();
+            showBlueprintPlaceholder();
+            zoom = 1;
+            blueprintCanvas.style.transform = "scale(1)";
+            breadcrumb.innerHTML = `<span onclick="reloadStation()">Crafting Station</span>`;
+            currentStation = null;
+            closeStationPopup();
+            craftDetail.classList.add("hidden");
+            homePage.classList.remove("hidden");
+        }
+
+        function reloadStation() {
+            if (currentStation) openCraftStation(currentStation);
+        }
+
+        function _clearBlueprint() {
+            Array.from(blueprintCanvas.children).forEach(child => {
+                if (child.id !== "treeSVG") child.remove();
+            });
+            treeSVG.innerHTML    = "";
+            miniCanvas.innerHTML = "";
+            document.querySelectorAll(".focusNode").forEach(n => n.classList.remove("focusNode"));
+            _nodeUidCounter = 0;
+        }
+
+        function scheduleBlueprintRefresh(centerAfter) {
+            requestAnimationFrame(() => {
+                drawLines();
+                buildMiniMap();
+                if (centerAfter) centerTree();
+            });
+        }
+
+        /* ===============================
+           SEARCH
+        =============================== */
+        function jumpRecipe(recipeId) {
+            searchResult.style.display = "none";
+            searchInput.value = "";
+            const recipe = getRecipe(recipeId);
+            if (!recipe) return;
+
+            // 1. Open station
+            openCraftStation(recipe.station_id);
+
+            // 2. Load recipe after short delay (DOM needs to settle)
+            setTimeout(() => {
+                loadRecipe(recipe.id);
+                updateBreadcrumb(recipe.id);
+                highlightNode(recipe.output_item_id);
+            }, 150);
+        }
+
+        function updateBreadcrumb(recipeId) {
+            const recipe  = getRecipe(recipeId);
+            if (!recipe) return;
+            const station = getStation(recipe.station_id);
+            const item    = getItem(recipe.output_item_id);
+            if (!station || !item) return;
+            breadcrumb.innerHTML = `
+<span onclick="reloadStation()">${station.name}</span>
+&gt;
+<span>${item.name}</span>`;
+        }
+
+        /* ===============================
+           BLUEPRINT LAYOUT ENGINE
+        =============================== */
+
+        // Layout Constants
+        const NODE_WIDTH      = 170;   // px – visual width of every node card
+        const NODE_HEIGHT     = 160;   // px – visual height of every node card
+        const LEVEL_GAP       = 100;   // px – vertical distance between parent bottom and child top
+        const NODE_GAP        = 30;    // px – horizontal gap between sibling subtrees
+        const SUBTREE_PADDING = 0;     // px – reserved
+
+        // ── PASS 1 : calculateTree ────────────────────────────────────────
+        function calculateTree(itemId, visited, quantity, depth) {
+            const item   = getItem(itemId);
+            const recipe = getRecipeByOutputItem(itemId);
+
+            if (!item) {
+                return { itemId, quantity, depth, subtreeWidth: NODE_WIDTH + NODE_GAP, children: [] };
+            }
+            if (!recipe) {
+                return { itemId, quantity, depth, subtreeWidth: NODE_WIDTH + NODE_GAP, children: [] };
+            }
+            const localVisited = new Set(visited);
+            if (localVisited.has(recipe.id)) {
+                return { itemId, quantity, depth, subtreeWidth: NODE_WIDTH + NODE_GAP, children: [] };
+            }
+            localVisited.add(recipe.id);
+
+            const materials = getRecipeMaterials(recipe.id);
+            if (!materials || materials.length === 0) {
+                return { itemId, quantity, depth, subtreeWidth: NODE_WIDTH + NODE_GAP, children: [] };
+            }
+
+            const children = materials.map(mat =>
+                calculateTree(mat.item_id, localVisited, mat.quantity, depth + 1)
+            );
+            const totalChildWidth = children.reduce((sum, c) => sum + c.subtreeWidth, 0);
+            const subtreeWidth    = Math.max(NODE_WIDTH + NODE_GAP, totalChildWidth);
+            return { itemId, quantity, depth, subtreeWidth, children };
+        }
+
+        // ── PASS 2 : layoutTree ───────────────────────────────────────────
+        function layoutTree(node, originX, originY, coords) {
+            const centreX = originX + (node.subtreeWidth / 2) - (NODE_WIDTH / 2);
+            coords.set(node, { x: centreX, y: originY });
+            if (node.children.length === 0) return;
+            let childX = originX;
+            const childY = originY + NODE_HEIGHT + LEVEL_GAP;
+            node.children.forEach(child => {
+                layoutTree(child, childX, childY, coords);
+                childX += child.subtreeWidth;
+            });
+        }
+
+        // ── PASS 3 : renderTree ───────────────────────────────────────────
+        let _nodeUidCounter = 0;
+        function renderTree(node, coords, container, nodeElements, parentUid) {
+            const item = getItem(node.itemId);
+            if (!item) return;
+            const pos = coords.get(node);
+            const uid = ++_nodeUidCounter;
+
+            const col = document.createElement("div");
+            col.className      = "recipeColumn";
+            col.dataset.depth  = node.depth;
+            col.dataset.uid    = uid;
+            col.style.position = "absolute";
+            col.style.left     = pos.x + "px";
+            col.style.top      = pos.y + "px";
+            col.style.width    = NODE_WIDTH + "px";
+
+            const cardDiv = document.createElement("div");
+            cardDiv.className       = "recipeItem";
+            cardDiv.dataset.itemId  = node.itemId;
+            cardDiv.dataset.nodeUid = uid;
+            if (parentUid !== undefined) {
+                cardDiv.dataset.parentUid = parentUid;
+            }
+            cardDiv.innerHTML = `
+                ${imgHtml(item.image)}
+                <h4>${item.name}</h4>
+                <span>x${node.quantity}</span>
+            `;
+            if (node.children.length > 0) {
+                cardDiv.onclick = () => focusRecipe(node.itemId);
+            }
+            col.appendChild(cardDiv);
+            container.appendChild(col);
+            nodeElements.push(cardDiv);
+
+            node.children.forEach(child => {
+                renderTree(child, coords, container, nodeElements, uid);
+            });
+        }
+
+        // ── Entry point ───────────────────────────────────────────────────
+        function loadRecipe(recipeId) {
+            const recipe = getRecipe(recipeId);
+            if (!recipe) return;
+
+            // 1. Clear previous state
+            _clearBlueprint();
+
+            // 2. PASS 1 – build node data tree
+            const visited  = new Set();
+            const rootNode = calculateTree(
+                recipe.output_item_id,
+                visited,
+                recipe.output_quantity || 1,
+                0
+            );
+
+            // 3. PASS 2 – assign coordinates
+            const coords = new Map();
+            layoutTree(rootNode, 0, 0, coords);
+
+            // 4. Size the canvas
+            let maxX = 0;
+            let maxY = 0;
+            coords.forEach(pos => {
+                maxX = Math.max(maxX, pos.x + NODE_WIDTH);
+                maxY = Math.max(maxY, pos.y + NODE_HEIGHT);
+            });
+            const canvasWidth  = Math.max(1800, maxX + NODE_GAP * 4);
+            const canvasHeight = Math.max(1200, maxY + NODE_HEIGHT + 100);
+            blueprintCanvas.style.width  = canvasWidth  + "px";
+            blueprintCanvas.style.height = canvasHeight + "px";
+
+            // 5. PASS 3 – render DOM (flat, absolutely positioned inside blueprintCanvas)
+            const flatContainer = document.createElement("div");
+            flatContainer.className      = "blueprintRoot";
+            flatContainer.style.position = "absolute";
+            flatContainer.style.top      = "40px";
+            flatContainer.style.left     = "0";
+            flatContainer.style.width    = canvasWidth  + "px";
+            flatContainer.style.height   = canvasHeight + "px";
+            const nodeElements = [];
+            renderTree(rootNode, coords, flatContainer, nodeElements, undefined);
+            blueprintCanvas.appendChild(flatContainer);
+
+            // 6. Show the canvas (hide placeholder)
+            showBlueprintCanvas();
+
+            updateBreadcrumb(recipeId);
+
+            // 7. Post-render: lines → minimap → center
+            scheduleBlueprintRefresh(true);
+        }
+
+        function openMaterial(itemId) {
+            // Reserved – tree is fully pre-rendered
+        }
+
+        function focusRecipe(itemId) {
+            highlightNode(itemId);
+            scheduleBlueprintRefresh(false);
+        }
+
+        /* ===============================
+           SVG LINES
+        =============================== */
+        function getCardAnchor(card, edge) {
+            const col = card.closest(".recipeColumn");
+            if (!col) return null;
+            const root = blueprintCanvas.querySelector(".blueprintRoot");
+            if (!root) return null;
+            const x = col.offsetLeft + col.offsetWidth / 2;
+            const y = col.offsetTop + card.offsetTop + (edge === "bottom" ? card.offsetHeight : 0);
+            return { x, y };
+        }
+
+        function drawLines() {
+            treeSVG.innerHTML = "";
+            const root = blueprintCanvas.querySelector(".blueprintRoot");
+            if (!root) return;
+
+            const w = blueprintCanvas.offsetWidth;
+            const h = blueprintCanvas.offsetHeight;
+            treeSVG.setAttribute("width", w);
+            treeSVG.setAttribute("height", h);
+            treeSVG.style.width  = w + "px";
+            treeSVG.style.height = h + "px";
+
+            const uidCardMap = {};
+            blueprintCanvas.querySelectorAll(".recipeItem[data-node-uid]").forEach(card => {
+                uidCardMap[card.dataset.nodeUid] = card;
+            });
+
+            blueprintCanvas.querySelectorAll(".recipeItem[data-parent-uid]").forEach(childCard => {
+                const parentCard = uidCardMap[childCard.dataset.parentUid];
+                if (!parentCard) return;
+                if (parentCard.offsetParent === null || childCard.offsetParent === null) return;
+
+                const pAnchor = getCardAnchor(parentCard, "bottom");
+                const cAnchor = getCardAnchor(childCard, "top");
+                if (!pAnchor || !cAnchor) return;
+
+                const x1 = pAnchor.x;
+                const y1 = pAnchor.y;
+                const x2 = cAnchor.x;
+                const y2 = cAnchor.y;
+                const midY = (y1 + y2) / 2;
+
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                line.setAttribute("d", `M${x1} ${y1} C${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`);
+                line.setAttribute("stroke", "#444");
+                line.setAttribute("stroke-width", "4");
+                line.setAttribute("fill", "none");
+                treeSVG.appendChild(line);
+            });
+        }
+
+        /* ===============================
+           ZOOM
+        =============================== */
+        function zoomIn() {
+            zoom += 0.1;
+            blueprintCanvas.style.transform = `scale(${zoom})`;
+            scheduleBlueprintRefresh(false);
+        }
+        function zoomOut() {
+            zoom = Math.max(0.5, zoom - 0.1);
+            blueprintCanvas.style.transform = `scale(${zoom})`;
+            scheduleBlueprintRefresh(false);
+        }
+        function resetZoom() {
+            zoom = 1;
+            blueprintCanvas.style.transform = "scale(1)";
+            scheduleBlueprintRefresh(true);
+        }
+
+        /* ===============================
+           MINI MAP
+        =============================== */
+        function buildMiniMap() {
+            miniCanvas.innerHTML = "";
+            const root = blueprintCanvas.querySelector(".blueprintRoot");
+            if (!root || blueprintWrapper.style.display === "none") return;
+
+            const canvasW = blueprintCanvas.offsetWidth  || 1;
+            const canvasH = blueprintCanvas.offsetHeight || 1;
+            const miniW   = miniCanvas.clientWidth  || 1;
+            const miniH   = miniCanvas.clientHeight || 1;
+            const scaleX  = miniW / canvasW;
+            const scaleY  = miniH / canvasH;
+
+            blueprintCanvas.querySelectorAll(".recipeItem").forEach(node => {
+                if (node.offsetParent === null) return;
+                const col = node.closest(".recipeColumn");
+                if (!col) return;
+                const x = (col.offsetLeft + col.offsetWidth / 2) * scaleX;
+                const y = (col.offsetTop  + node.offsetTop + node.offsetHeight / 2) * scaleY;
+                const dot = document.createElement("div");
+                dot.className  = "miniNode";
+                dot.style.left = Math.max(0, Math.min(miniW - 8, x - 4)) + "px";
+                dot.style.top  = Math.max(0, Math.min(miniH - 8, y - 4)) + "px";
+                miniCanvas.appendChild(dot);
+            });
+        }
+
+        /* ===============================
+           CENTER TREE
+        =============================== */
+        function centerTree() {
+            const root = blueprintCanvas.querySelector(".blueprintRoot");
+            if (!root) {
+                blueprintWrapper.scrollLeft = Math.max(0, (blueprintCanvas.scrollWidth - blueprintWrapper.clientWidth) / 2);
+                blueprintWrapper.scrollTop  = 0;
+                buildMiniMap();
+                return;
+            }
+            let minX = Infinity, maxX = -Infinity;
+            blueprintCanvas.querySelectorAll(".recipeColumn").forEach(col => {
+                if (col.offsetParent === null) return;
+                minX = Math.min(minX, col.offsetLeft);
+                maxX = Math.max(maxX, col.offsetLeft + col.offsetWidth);
+            });
+            if (!isFinite(minX)) {
+                blueprintWrapper.scrollLeft = Math.max(0, (blueprintCanvas.scrollWidth - blueprintWrapper.clientWidth) / 2);
+            } else {
+                const treeCenter = (minX + maxX) / 2;
+                blueprintWrapper.scrollLeft = Math.max(0, treeCenter * zoom - blueprintWrapper.clientWidth / 2);
+            }
+            blueprintWrapper.scrollTop = 0;
+            buildMiniMap();
+        }
+
+        /* ===============================
+           COLLAPSE / EXPAND
+        =============================== */
+        function collapseTree() {
+            document.querySelectorAll(".recipeColumn").forEach(col => {
+                if (parseInt(col.dataset.depth || "0", 10) > 0) {
+                    col.style.display = "none";
+                }
+            });
+            drawLines();
+            buildMiniMap();
+        }
+        function expandAll() {
+            document.querySelectorAll(".recipeColumn").forEach(col => {
+                col.style.display = "";
+            });
+            drawLines();
+            buildMiniMap();
+        }
+
+        /* ===============================
+           HIGHLIGHT NODE
+        =============================== */
+        function highlightNode(itemId) {
+            // Remove previous highlight first
+            document.querySelectorAll(".focusNode").forEach(n => n.classList.remove("focusNode"));
+            const targetName = getItem(itemId)?.name;
+            if (!targetName) return;
+            document.querySelectorAll(".recipeItem").forEach(node => {
+                const title = node.querySelector("h4");
+                if (title && title.innerText === targetName) {
+                    node.classList.add("focusNode");
+                    node.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+                }
+            });
+        }
+
+        /* ===============================
+           POPUP
+        =============================== */
+        function showStationInfo() {
+            const station = getStation(currentStation);
+            if (!station) return;
+
+            stationPopup.classList.remove("hidden");
+            stationPopupImage.src = getImage(station.image);
+            stationPopupImage.onerror = function () { this.src = "images/no-image.png"; };
+            stationPopupName.innerHTML     = station.name || "Unknown Station";
+            stationPopupCategory.innerHTML = station.category   || "Crafting Station";
+            stationPopupMap.innerHTML      = station.map        || "Unknown";
+            stationPopupDesc.innerHTML     = station.description || "No Description";
+
+            const recipes = getRecipesByStation(station.id);
+            stationPopupRecipe.innerHTML = recipes.length;
+
+            let html = "";
+            recipes.forEach(recipe => {
+                const item = getItem(recipe.output_item_id);
+                if (!item) return;
+                html += `
+<div class="stationCraftCard" onclick="loadRecipe(${recipe.id});closeStationPopup();">
+    <img src="${getImage(item.image)}" onerror="this.src='images/no-image.png'">
+    <h4>${item.name}</h4>
+</div>`;
+            });
+            stationCraftGrid.innerHTML = html;
+        }
+
+        function closeStationPopup() {
+            stationPopup.classList.add("hidden");
+        }
+
+        /* ===============================
+           EVENT LISTENERS (registered once)
+        =============================== */
+
+        // Single unified search input handler
+        searchInput.addEventListener("input", function () {
+            const key = this.value.toLowerCase().trim();
+
+            // Update station grid on home page
+            if (key === "") {
+                renderStations();
+                searchResult.style.display = "none";
+                return;
+            }
+
+            // Filter stations by matching recipe names
+            const matchedStationIds = new Set();
+            const matchedRecipes    = [];
+            (DB.recipes || []).forEach(recipe => {
+                const item = getItem(recipe.output_item_id);
+                if (!item) return;
+                if (item.name.toLowerCase().includes(key)) {
+                    matchedRecipes.push(recipe);
+                    matchedStationIds.add(recipe.station_id);
+                }
+            });
+
+            // Update station grid
+            let gridHtml = "";
+            matchedStationIds.forEach(sid => {
+                const station = getStation(sid);
+                if (!station) return;
+                const totalRecipe = getRecipesByStation(sid).length;
+                gridHtml += `
+<div class="stationCard" onclick="openCraftStation(${sid})">
+    <div class="stationImage">
+        <img src="${getImage(station.image)}" onerror="this.src='images/no-image.png'">
+    </div>
+    <div class="stationName">${station.name}</div>
+    <div class="stationRecipe">${totalRecipe} Crafting Recipes</div>
+</div>`;
+            });
+
+            if (gridHtml === "") {
+                stationGrid.innerHTML = '<div class="loading">No Crafting Station Found</div>';
+                totalStation.innerHTML = "0 Stations";
+            } else {
+                stationGrid.innerHTML  = gridHtml;
+                totalStation.innerHTML = matchedStationIds.size + " Stations";
+            }
+
+            // Update search dropdown
+            if (matchedRecipes.length === 0) {
+                searchResult.innerHTML     = '<div class="loading">No Item Found</div>';
+                searchResult.style.display = "block";
+                return;
+            }
+            let dropHtml = "";
+            matchedRecipes.forEach(recipe => {
+                const item    = getItem(recipe.output_item_id);
+                const station = getStation(recipe.station_id);
+                if (!item || !station) return;
+                dropHtml += `
+<div class="searchItem" onclick="jumpRecipe(${recipe.id})">
+    <img src="${getImage(item.image)}" onerror="this.src='images/no-image.png'">
+    <div>
+        <h4>${item.name}</h4>
+        <small>${station.name}</small>
+    </div>
+</div>`;
+            });
+            searchResult.innerHTML     = dropHtml;
+            searchResult.style.display = "block";
+        });
+
+        // Close search dropdown on outside click
+        document.addEventListener("click", e => {
+            if (!e.target.closest(".searchBox")) {
+                searchResult.style.display = "none";
+            }
+        });
+
+        // Filter buttons (visual only — no data filtering yet)
+        document.querySelectorAll(".filterBtn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".filterBtn").forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
+
+        // Blueprint drag-to-pan
+        blueprintWrapper.addEventListener("mousedown", e => {
+            drag = true;
+            sx   = e.pageX;
+            sy   = e.pageY;
+            blueprintWrapper.style.cursor = "grabbing";
+        });
+        document.addEventListener("mouseup", () => {
+            drag = false;
+            blueprintWrapper.style.cursor = "grab";
+        });
+        document.addEventListener("mousemove", e => {
+            if (!drag) return;
+            blueprintWrapper.scrollLeft -= e.pageX - sx;
+            blueprintWrapper.scrollTop  -= e.pageY - sy;
+            sx = e.pageX;
+            sy = e.pageY;
+        });
+
+        // Redraw lines on resize
+        window.addEventListener("resize", drawLines);
+
+        // Close popup on backdrop click
+        stationPopup.addEventListener("click", e => {
+            if (e.target === stationPopup) closeStationPopup();
+        });
+
+    </script>
+</body>
+</html>

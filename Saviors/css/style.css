@@ -1,0 +1,571 @@
+/* ========================================
+   GOOGLE FONT
+======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ========================================
+   ROOT COLOR
+======================================== */
+
+:root {
+
+    --bg-primary: #0F1115;
+    --bg-secondary: #1B1F27;
+    --bg-card: #232834;
+
+    --accent-orange: #C76B29;
+    --accent-green: #596348;
+
+    --danger: #6B1D1D;
+
+    --text-primary: #E8E8E8;
+    --text-secondary: #A0A0A0;
+
+    --border: #2F3645;
+
+}
+
+/* ========================================
+   RESET
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    background: var(--bg-primary);
+    color: var(--text-primary);
+
+    font-family: 'Inter', sans-serif;
+
+    overflow-x: hidden;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-orange);
+}
+
+/* ========================================
+   NAVBAR
+======================================== */
+
+header {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    z-index: 999;
+
+    backdrop-filter: blur(10px);
+
+    background: rgba(15,17,21,0.85);
+
+    border-bottom: 1px solid var(--border);
+}
+
+nav {
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 18px 40px;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+
+    height: 60px;
+}
+
+nav ul {
+
+    display: flex;
+
+    gap: 40px;
+
+    list-style: none;
+}
+
+nav a {
+
+    text-decoration: none;
+
+    color: var(--text-primary);
+
+    transition: .3s;
+}
+
+nav a:hover {
+
+    color: var(--accent-orange);
+}
+
+.discord-button {
+
+    background: var(--accent-orange);
+
+    padding: 10px 20px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.discord-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 0 20px rgba(199,107,41,.4);
+}
+
+/* ========================================
+   GENERAL SECTION
+======================================== */
+
+section {
+
+    padding: 120px 8%;
+}
+
+section h1 {
+
+    font-size: 3rem;
+
+    margin-bottom: 30px;
+
+    color: var(--accent-orange);
+}
+
+/* ========================================
+   HERO BANNER
+======================================== */
+
+.hero-banner {
+
+    height: 100vh;
+
+    overflow: hidden;
+
+    border-radius: 15px;
+}
+
+.hero-banner img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* ========================================
+   HOME CONTENT
+======================================== */
+
+.home-content {
+
+    margin-top: 60px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1.5fr;
+
+    gap: 30px;
+}
+
+.news-section,
+.album-section {
+
+    background: var(--bg-secondary);
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    border: 1px solid var(--border);
+}
+
+.news-section h2,
+.album-section h2 {
+
+    margin-bottom: 20px;
+
+    color: var(--accent-orange);
+}
+
+article {
+
+    background: var(--bg-card);
+
+    padding: 20px;
+
+    border-radius: 10px;
+}
+
+/* ========================================
+   GALLERY
+======================================== */
+
+.gallery {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+
+    gap: 15px;
+}
+
+.gallery img {
+
+    width: 100%;
+
+    height: 180px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.gallery img:hover {
+
+    transform: scale(1.05);
+}
+
+/* ========================================
+   BACKSTORY
+======================================== */
+
+.story-tabs {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 30px;
+}
+
+.story-indonesia,
+.story-english {
+
+    background: var(--bg-secondary);
+
+    padding: 30px;
+
+    border-radius: 15px;
+
+    border: 1px solid var(--border);
+
+    line-height: 1.8;
+}
+
+/* ========================================
+   MEMBERSHIP
+======================================== */
+
+.organization-tree {
+
+    text-align: center;
+}
+
+.leader {
+
+    width: 250px;
+
+    margin: auto;
+
+    padding: 25px;
+
+    background: linear-gradient(
+        135deg,
+        #C76B29,
+        #9d511f
+    );
+
+    border-radius: 15px;
+
+    font-weight: bold;
+}
+
+.right-hand-group {
+
+    margin-top: 40px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 50px;
+}
+
+.blood-group {
+
+    margin-top: 40px;
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+}
+
+.member-card {
+
+    width: 220px;
+
+    background: var(--bg-secondary);
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    cursor: pointer;
+
+    border: 1px solid var(--border);
+
+    transition: .3s;
+}
+
+.member-card:hover {
+
+    transform: translateY(-5px);
+
+    border-color: var(--accent-orange);
+}
+
+/* ========================================
+   MEMBER MODAL
+======================================== */
+
+#member-modal {
+
+    display: none;
+}
+
+.modal-content {
+
+    background: var(--bg-secondary);
+
+    padding: 30px;
+
+    border-radius: 15px;
+}
+
+/* ========================================
+   BASE
+======================================== */
+
+.base-container {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+}
+
+.base-map img {
+
+    width: 100%;
+
+    border-radius: 15px;
+}
+
+.base-info {
+
+    background: var(--bg-secondary);
+
+    padding: 30px;
+
+    border-radius: 15px;
+}
+
+.base-info p {
+
+    margin-bottom: 15px;
+}
+
+/* ========================================
+   BASE GALLERY
+======================================== */
+
+.base-gallery {
+
+    margin-top: 40px;
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+
+    gap: 15px;
+}
+
+.base-gallery img {
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+}
+
+/* ========================================
+   CRAFTING
+======================================== */
+
+.crafting-controls {
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+.crafting-controls input,
+.crafting-controls select {
+
+    background: var(--bg-secondary);
+
+    color: white;
+
+    border: 1px solid var(--border);
+
+    padding: 12px;
+
+    border-radius: 8px;
+}
+
+.crafting-list {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+
+    gap: 20px;
+}
+
+.item-card {
+
+    background: var(--bg-secondary);
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    transition: .3s;
+
+    cursor: pointer;
+}
+
+.item-card:hover {
+
+    border: 1px solid var(--accent-orange);
+
+    transform: translateY(-3px);
+}
+
+.crafting-detail {
+
+    margin-top: 40px;
+
+    background: var(--bg-secondary);
+
+    padding: 30px;
+
+    border-radius: 15px;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+footer {
+
+    text-align: center;
+
+    padding: 40px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media(max-width: 900px){
+
+    nav {
+
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+    nav ul {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+    .home-content,
+    .story-tabs,
+    .base-container {
+
+        grid-template-columns: 1fr;
+    }
+
+    .right-hand-group,
+    .blood-group {
+
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+    section h1 {
+
+        font-size: 2rem;
+    }
+}

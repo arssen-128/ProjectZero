@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAVIORS | Project Zero</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;600;700&family=Rajdhani:wght@400;600&display=swap');
+    :root {
+      --bg: #090B0E;
+      --surface: #0F1318;
+      --card: #141820;
+      --orange: #B85C1A;
+      --orange-glow: #D4722A;
+      --red: #7A1515;
+      --blood: #5C0A0A;
+      --green: #2A3D1E;
+      --text: #D4C9B8;
+      --text-sec: #7A7060;
+      --border: #1E2530;
+      --border-glow: #3A2810;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', Arial, sans-serif;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+    /* ── SCANLINE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .04) 2px, rgba(0, 0, 0, .04) 4px);
+      pointer-events: none;
+      z-index: 9998;
+    }
+    /* ── NAVBAR ── */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 997;
+      background: rgba(9, 11, 14, .95);
+      border-bottom: 1px solid var(--border);
+    }
+    header::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), var(--red), transparent);
+    }
+    nav {
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+    }
+    .logo img {
+      height: 100px;
+      width: auto;
+      display: block;
+    }
+    nav ul {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--text-sec);
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color .2s;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+    nav a:hover {
+      color: var(--orange-glow);
+      border-color: var(--orange);
+    }
+    /* ── HERO ── */
+    .hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: url('assets/banner.png') center/cover no-repeat;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, .3) 0%, rgba(9, 11, 14, .7) 60%, var(--bg) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      font-family: 'Creepster', cursive;
+      font-size: 90px;
+      letter-spacing: 12px;
+      color: #fff;
+      text-shadow: 0 0 40px rgba(180, 80, 20, .8), 2px 2px 0 #000;
+      line-height: 1;
+    }
+    .hero-sub {
+      margin-top: 12px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      letter-spacing: 8px;
+      color: var(--orange);
+      text-transform: uppercase;
+    }
+    .hero-badge {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 10px 28px;
+      border: 1px solid var(--orange);
+      color: var(--orange-glow);
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, .4);
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--text-sec);
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%,
+      100% {
+        opacity: .3
+      }
+      50% {
+        opacity: 1
+      }
+    }
+    /* ── SECTION ── */
+    section.content {
+      padding: 100px 8%;
+      max-width: 1400px;
+      margin: auto;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-glow), var(--border));
+    }
+    .section-title {
+      font-family: 'Creepster', cursive;
+      font-size: 36px;
+      letter-spacing: 4px;
+      color: var(--orange-glow);
+    }
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blood), var(--orange), transparent);
+    }
+    /* ── HOME GRID ── */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 20px;
+    }
+    .activity-list {
+      margin-top: 16px;
+    }
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    .activity-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .activity-time {
+      color: var(--text-sec);
+      font-size: 12px;
+      display: block;
+      margin-top: 3px;
+    }
+    .card-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 16px;
+    }
+    /* ── GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .gallery-item {
+      height: 130px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%) contrast(1.1);
+      transition: filter .3s, transform .3s;
+    }
+    .gallery-item:hover img {
+      filter: grayscale(0%) contrast(1.2);
+      transform: scale(1.05);
+    }
+    .gallery-item::after {
+      content: '⊕';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--orange);
+      background: rgba(0, 0, 0, .5);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .gallery-item:hover::after {
+      opacity: 1;
+    }
+    /* ── STORY ── */
+    .lang-toggle {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      width: fit-content;
+      border: 1px solid var(--border);
+    }
+    .lang-btn {
+      padding: 8px 24px;
+      background: transparent;
+      border: none;
+      color: var(--text-sec);
+      cursor: pointer;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all .2s;
+    }
+    .lang-btn.active {
+      background: var(--orange);
+      color: #fff;
+    }
+    .story-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blood);
+      padding: 32px;
+      line-height: 1.9;
+      font-size: 15px;
+      color: var(--text);
+      position: relative;
+    }
+    .story-box::before {
+      content: '"';
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      font-size: 80px;
+      color: var(--border-glow);
+      font-family: 'Creepster', cursive;
+      line-height: 1;
+    }
+    /* ── MEMBERS ── */
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .member-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .member-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(90, 10, 10, .15), transparent);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .member-card:hover {
+      border-color: var(--orange);
+    }
+    .member-card:hover::before {
+      opacity: 1;
+    }
+    .member-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--border-glow);
+      background: var(--surface);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--orange);
+    }
+    .member-rank {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 4px;
+    }
+    .member-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .member-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #4CAF50;
+      letter-spacing: 1px;
+      font-family: 'Oswald', sans-serif;
+    }
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #4CAF50;
+    }
+    /* ── BASE ── */
+    .base-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .base-map {
+      background: var(--card);
+      border: 1px solid var(--border);
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .base-map-placeholder {
+      text-align: center;
+      color: var(--text-sec);
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 2px;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    .base-info-list {
+      margin-top: 16px;
+    }
+    .base-info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .base-info-row:last-child {
+      border-bottom: none;
+    }
+    .base-info-label {
+      color: var(--text-sec);
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .base-info-value {
+      color: var(--orange-glow);
+      font-weight: 600;
+    }
+    /* ── THREAT LEVEL BAR ── */
+    .threat-bar-wrap {
+      margin: 20px 0 0;
+    }
+    .threat-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-sec);
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .threat-bar-bg {
+      height: 6px;
+      background: var(--border);
+      border-radius: 0;
+      overflow: hidden;
+    }
+    .threat-bar-fill {
+      height: 100%;
+      width: 72%;
+      background: linear-gradient(90deg, var(--blood), var(--orange));
+    }
+    /* ── CRAFTING ── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .search-wrap input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-wrap input::placeholder {
+      color: var(--text-sec);
+    }
+    .search-wrap input:focus {
+      border-color: var(--orange);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-sec);
+      font-size: 16px;
+    }
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 16px;
+      transition: border-color .2s;
+      cursor: pointer;
+    }
+    .item:hover {
+      border-color: var(--orange);
+    }
+    .item-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .item-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+    .item-rarity {
+      font-size: 11px;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .rarity-common {
+      color: #888;
+    }
+    .rarity-uncommon {
+      color: #5a9e3a;
+    }
+    .rarity-rare {
+      color: #3a72b5;
+    }
+    .rarity-epic {
+      color: #9b59b6;
+    }
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--orange);
+      width: 480px;
+      max-width: 92%;
+      padding: 32px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: var(--text-sec);
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .modal-close:hover {
+      color: var(--text);
+    }
+    .modal-rank {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .modal-name {
+      font-family: 'Creepster', cursive;
+      font-size: 32px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .modal-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+    .modal-stat {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 6px 0;
+      color: var(--text-sec);
+    }
+    .modal-stat span:last-child {
+      color: var(--text);
+      font-weight: 600;
+    }
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .95);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border: 1px solid var(--border);
+    }
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-sec);
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    footer .footer-logo {
+      font-family: 'Creepster', cursive;
+      font-size: 22px;
+      color: var(--orange);
+      letter-spacing: 6px;
+      margin-bottom: 8px;
+    }
+    .footer-logo img {
+      height: 50px;
+    }
+    .base-map img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .home-grid,
+      .base-grid {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .hero h1 {
+        font-size: 52px;
+      }
+      section.content {
+        padding: 80px 5%;
+      }
+    }
+    .craftingBtn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 220px;
+      text-decoration: none;
+      background: #141820;
+      border: 1px solid #2A2F38;
+      border-radius: 8px;
+      transition: .25s;
+      cursor: pointer;
+    }
+    .craftingBtn:hover {
+      border-color: #B85C1A;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(184, 92, 26, .25);
+    }
+    .craftIcon {
+      font-size: 72px;
+      margin-bottom: 18px;
+    }
+    .craftTitle {
+      font-family: 'Oswald';
+      font-size: 28px;
+      color: white;
+      letter-spacing: 2px;
+    }
+    .craftDesc {
+      margin-top: 10px;
+      color: #999;
+      text-align: center;
+      max-width: 350px;
+      line-height: 1.6;
+    }
+  </style>
+  <link rel="stylesheet" href="members/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="assets/logo.png" alt="Saviors Logo">
+      </div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#story">Backstory</a></li>
+        <li><a href="#members">Members</a></li>
+        <li><a href="#base">Base</a></li>
+        <li><a href="#crafting">Crafting</a></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>SAVIORS</h1>
+      <p class="hero-sub">No One Left Behind</p>
+      <div class="hero-badge">Project Zero — Survive Together</div>
+    </div>
+    <div class="scroll-hint">▼ Scroll to descend ▼</div>
+  </section>
+  <!-- HOME -->
+  <div style="padding: 80px 8% 0; max-width:1400px; margin:auto;">
+    <div class="home-grid">
+      <div class="card">
+        <div class="card-label">Latest Activity</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div>
+              <span>Markas utama sedang dalam pembangunan tahap akhir</span>
+              <span class="activity-time">2 jam lalu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Gallery</div>
+        <div class="gallery">
+          <div class="gallery-item"><img src="assets/gallery/1.png" alt=""></div>
+          <div class="gallery-item"><img src="assets/gallery/2.png" alt=""></div>
+          <div class="gallery-item"><img src="assets/gallery/3.png" alt=""></div>
+          <div class="gallery-item"><img src="assets/gallery/4.png" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- BACKSTORY -->
+  <section class="content" id="story" style="padding-top:100px;">
+    <div class="section-header">
+      <span class="section-title">Backstory</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="idBtn">🇮🇩 Indonesia</button>
+      <button class="lang-btn" id="enBtn">🇺🇸 English</button>
+    </div>
+    <div class="story-box" id="storyContent">
+      ‎ ‎ ‎ ‎ ‎ ‎ Di dunia yang hancur akibat wabah misterius, peradaban manusia runtuh hanya dalam hitungan bulan.
+      Kota-kota besar berubah menjadi reruntuhan sunyi yang dipenuhi makhluk-makhluk yang dahulu adalah manusia. Langit
+      selalu diselimuti awan kelabu, dan harapan menjadi sesuatu yang semakin langka ditemukan.
+      Di tengah kehancuran tersebut, lahirlah sebuah kelompok kecil yang menolak tunduk pada nasib. Mereka menamakan
+      diri mereka SAVIORS.
+      SAVIORS bukan sekadar kelompok penyintas. Mereka adalah orang-orang yang masih percaya bahwa dunia ini layak
+      diperjuangkan. Saat banyak kelompok memilih jalan kekerasan, pengkhianatan, dan kepentingan pribadi, SAVIORS
+      berdiri di atas satu prinsip yang tidak pernah berubah:
+      "No One Left Behind."
+      Mereka mencari para penyintas yang tersisa, memberikan perlindungan bagi yang membutuhkan, dan terus berusaha
+      menjaga secercah harapan agar umat manusia tidak benar-benar punah.
+    </div>
+  </section>
+  <!-- MEMBERS -->
+  <section class="cmd-root" id="cmd-root">
+    <header class="cmd-header">
+      <div class="cmd-eyebrow">Faction Database // Restricted Access</div>
+      <h2 class="cmd-title">Saviors Command Structure</h2>
+      <p class="cmd-subtitle">Live personnel hierarchy — Warlord down to Youngblood Division</p>
+      <div class="cmd-rule"></div>
+    </header>
+    <div class="cmd-stats">
+      <div class="stat-cell">
+        <div class="stat-num" id="stat-total">0</div>
+        <div class="stat-label">Total Members</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" id="stat-warlord">0</div>
+        <div class="stat-label">Warlord</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" id="stat-rh">0</div>
+        <div class="stat-label">Right Hand</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" id="stat-enf">0</div>
+        <div class="stat-label">Enforcer</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" id="stat-yb">0</div>
+        <div class="stat-label">Youngblood</div>
+      </div>
+    </div>
+    <div class="cmd-spec-stats" id="cmd-spec-stats"></div>
+    <div class="cmd-controls">
+      <div class="cmd-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7" />
+          <path d="M21 21l-4.3-4.3" />
+        </svg>
+        <input type="text" id="cmd-search-input" placeholder="Search by name or member code..." autocomplete="off" />
+      </div>
+      <div class="cmd-filters">
+        <button class="filter-btn active" data-filter="ALL">All</button>
+        <button class="filter-btn" data-filter="MEDIC">Medic</button>
+        <button class="filter-btn" data-filter="ENGINEER">Engineer</button>
+        <button class="filter-btn" data-filter="SCAVENGER">Scavenger</button>
+        <button class="filter-btn" data-filter="SURVIVALIST">Survivalist</button>
+      </div>
+      <div class="cmd-zoom-controls">
+        <button class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
+        <button class="zoom-btn" id="zoom-reset" aria-label="Reset zoom" style="font-size:11px;">⤾</button>
+        <button class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
+      </div>
+    </div>
+    <div class="cmd-canvas-wrap" id="cmd-canvas-wrap">
+      <div class="cmd-canvas" id="cmd-canvas"></div>
+      <div class="cmd-canvas-hint">Scroll to zoom · Drag to pan · Click division to expand</div>
+    </div>
+  </section>
+  <!-- BASE -->
+  <section class="content" id="base" style="padding-top:0;">
+    <div class="section-header">
+      <span class="section-title">Base Location</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="base-grid">
+      <div class="base-map">
+        <img src="assets/base/map.png" alt="Base Map">
+      </div>
+      <div class="card">
+        <div class="card-label">HQ Intel</div>
+        <div class="base-info-list">
+          <div class="base-info-row"><span class="base-info-label">Nama Base</span><span class="base-info-value">Savior
+              HQ</span></div>
+          <div class="base-info-row"><span class="base-info-label">Lokasi</span><span class="base-info-value">Los Santos
+              Airport</span></div>
+          <div class="base-info-row"><span class="base-info-label">Radio Tower</span><span
+              class="base-info-value">XX</span></div>
+          <div class="base-info-row"><span class="base-info-label">Status</span><span
+              style="color:#4CAF50; font-weight:600;">⬤ Secured</span></div>
+          <div class="base-info-row"><span class="base-info-label">Kapasitas</span><span class="base-info-value">—
+              Members</span></div>
+        </div>
+        <div class="threat-bar-wrap">
+          <div class="threat-label"><span>Threat Level</span><span>HIGH</span></div>
+          <div class="threat-bar-bg">
+            <div class="threat-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- CRAFTING -->
+  <section class="content" id="crafting" style="padding-top:0;">
+    <div class="section-header">
+      <span class="section-title">Crafting Database</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="item-grid" id="itemGrid">
+      <a href="/PZ/3section.html" class="craftingBtn">
+        <div class="craftIcon">
+          ⚒
+        </div>
+        <div class="craftTitle">
+          Crafting Database
+        </div>
+        <div class="craftDesc">
+          Browse every crafting station,
+          recipes and production chain.
+        </div>
+      </a>
+    </div>
+  </section>
+  <footer>
+    <img src="assets/logo.png" alt="Saviors Logo">
+    <div>© Project Zero — No One Left Behind</div>
+  </footer>
+  <!-- MEMBER MODAL -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-rank" id="mRank">—</div>
+      <div class="modal-name" id="mName">—</div>
+      <div class="modal-divider"></div>
+      <div class="modal-stat"><span>Kill Count</span><span id="mKills">—</span></div>
+      <div class="modal-stat"><span>Joined</span><span id="mJoined">—</span></div>
+      <div class="modal-stat"><span>Status</span><span id="mStatus">—</span></div>
+    </div>
+  </div>
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="">
+  </div>
+  <script>
+    const memberModal = document.getElementById('memberModal');
+    const modalClose = document.getElementById('modalClose');
+    document.querySelectorAll('.member-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.getElementById('mRank').textContent = card.dataset.rank;
+        document.getElementById('mName').textContent = card.dataset.name;
+        document.getElementById('mKills').textContent = card.dataset.kills;
+        document.getElementById('mJoined').textContent = card.dataset.joined;
+        document.getElementById('mStatus').textContent = card.dataset.status;
+        memberModal.classList.add('open');
+      });
+    });
+    modalClose.addEventListener('click', () => memberModal.classList.remove('open'));
+    memberModal.addEventListener('click', e => { if (e.target === memberModal) memberModal.classList.remove('open'); });
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+    lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+    const storyID = ` ‎ ‎ ‎ ‎Di dunia yang hancur akibat wabah misterius, peradaban manusia runtuh hanya dalam hitungan bulan. Kota-kota besar berubah menjadi reruntuhan sunyi yang dipenuhi makhluk-makhluk yang dahulu adalah manusia. Langit selalu diselimuti awan kelabu, dan harapan menjadi sesuatu yang semakin langka ditemukan. Di tengah kehancuran tersebut, lahirlah sebuah kelompok kecil yang menolak tunduk pada nasib. Mereka menamakan diri mereka SAVIORS. SAVIORS bukan sekadar kelompok penyintas. Mereka adalah orang-orang yang masih percaya bahwa dunia ini layak diperjuangkan. Saat banyak kelompok memilih jalan kekerasan, pengkhianatan, dan kepentingan pribadi, SAVIORS berdiri di atas satu prinsip yang tidak pernah berubah: "No One Left Behind." Mereka mencari para penyintas yang tersisa, memberikan perlindungan bagi yang membutuhkan, dan terus berusaha menjaga secercah harapan agar umat manusia tidak benar-benar punah.`;
+    const storyEN = `‎ ‎ ‎ ‎ In a world devastated by a mysterious plague, human civilization collapsed in a matter of months. Major cities were reduced to desolate ruins filled with creatures that were once human. The sky was always shrouded in gray clouds, and hope became increasingly rare.
+                    Amidst this destruction, a small group was born that refused to submit to fate. They called themselves the SAVIORS.
+                    The SAVIORS are more than just survivors. They are those who still believe that this world is worth fighting for. While many groups choose the path of violence, betrayal, and self-interest, the SAVIORS stand on one unchanging principle:
+                    "No One Left Behind."
+                    They search for the remaining survivors, provide shelter for those in need, and continue to strive to maintain a glimmer of hope so that humanity will not be completely wiped out.`;
+    const storyEl = document.getElementById('storyContent');
+    const idBtn = document.getElementById('idBtn');
+    const enBtn = document.getElementById('enBtn');
+    idBtn.addEventListener('click', () => {
+      storyEl.textContent = storyID;
+      idBtn.classList.add('active');
+      enBtn.classList.remove('active');
+    });
+    enBtn.addEventListener('click', () => {
+      storyEl.textContent = storyEN;
+      enBtn.classList.add('active');
+      idBtn.classList.remove('active');
+    });
+    document.getElementById('searchItem').addEventListener('input', function () {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('#itemGrid .item').forEach(item => {
+        item.style.display = item.dataset.name.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+  <script src="members/data.js"></script>
+  <script src="members/app.js"></script>
+</body>
+</html>

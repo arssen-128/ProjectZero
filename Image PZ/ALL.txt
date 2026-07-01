@@ -1,0 +1,488 @@
+BMX Bike
+	Recipe
+	5kg
+	10s
+	1x Bike Tire
+	1x Large Gear
+	1x Bike Chain
+	5x Duct Tape
+	25x Scrap Metal
+Bike Tire
+	Recipe
+	300g
+	10s
+	2x Duct Tape
+	15x Scrap Metal
+Bike Chain
+	Recipe
+	150g
+	10s
+	25x Scrap Metal
+Large Gear
+	Recipe
+	400g
+	10s
+	20x Scrap Metal
+Electronic Parts
+	Recipe
+	200g
+	5s
+	1x Broken Fuse
+9V Battery
+	Recipe
+	100g
+	10s
+	1x Battery
+Flashlight
+	Recipe
+	125g
+	10s
+	1x 9V Battery
+	1x Broken Vape
+	1x Electronic Parts
+	1x Plastic
+Electronic Parts
+	Recipe
+	200g
+	10s
+	1x Broken Vape
+Electronic Parts
+	Recipe
+	200g
+	10s
+	1x Broken Radio
+Vehicle Suspension
+	Recipe
+	2kg
+	10s
+	5x Metal Pipes
+	25x Scrap Metal
+Ignition Module
+	Recipe
+	500g
+	A vehicle ignition module
+	10s
+	3x Metal Pipes
+	7x Scrap Metal
+Large Gear
+	Recipe
+	400g
+	10s
+	20x Scrap Metal
+Radiator
+	Recipe
+	2kg
+	10s
+	3x Wire Scraps
+	6x Scrap Metal
+Fuel Injector
+	Recipe
+	300g
+	10s
+	4x Scrap Metal
+	5x Wire Scraps
+Drive Shaft
+	Recipe
+	2kg
+	10s
+	8x Metal Pipes
+	9x Scrap Metal
+Frame
+	Recipe
+	5kg
+	A vehicle frames
+	10s
+	3x Metal Pipes
+	7x Scrap Metal
+Axles
+	Recipe
+	3 kg
+	Vehicle axles
+	10s
+	3x Metal Pipes
+	7x Scrap Metal
+Transmission
+	Recipe
+	4kg
+	A vehicle transmission
+	10s
+	2x Oil Filter
+	3x Metal Pipes
+	7x Scrap Metal
+Brakes
+	Recipe
+	2kg
+	Vehicle brakes
+	10s
+	2x Oil Filter
+	4x Rubber
+	6x Scrap Metal
+Engine
+	Recipe
+	8kg
+	A vehicle engine
+	10s
+	1x Radiator
+	1x Fuel Injector
+	2x Metal Nuts
+	2x Oil Filter
+	6x Scrap Metal
+Torch
+	Recipe
+	200g
+	5s
+	1x 2x4
+	1x Rubbing Alcohol
+	1x Lighter
+	2x Dirty Clothes
+Fire Wick
+	Recipe
+	50g
+	5s
+	15x Dirty Clothes
+Pencil
+	Recipe
+	100g
+	A pencil for writing
+	5s
+	1x Oak Plank
+Paper
+	Recipe
+	350g
+	A piece of paper
+	5s
+	15x Paper Scraps
+Compass
+	Recipe
+	0g
+	5s
+	1x Metal Beams
+	5x Plastic
+	10x Scrap Metal
+Metal Composite
+	Recipe
+	300g
+	5s
+	1x Reinforced Plastic
+	100x Scrap Metal
+Reinforced Plastic
+	Recipe
+	500g
+	5s
+	125x Plastic
+Code Lock
+	Recipe
+	0g
+	5s
+	15x Scrap Metal
+Screwdriver
+	Recipe
+	200g
+	10s
+	6x Plastic
+	8x Scrap Metal
+Socket Wrench
+	Recipe
+	500g
+	10s
+	6x Metal Nuts
+	8x Scrap Metal
+Wrench
+	Recipe
+	1.5kg
+	10s
+	1x Rusty Wrench
+	1x Duct Tape
+	1x Hammer
+	5x Scrap Metal
+Door Kit
+	Recipe
+	2.5kg
+	Repair your car's door
+	10s
+	2x Duct Tape
+	4x Metal Nuts
+	Sx Scrap Metal
+Tire Kit
+	Recipe
+	2.5kg
+	Repair your car's tire
+	10s
+	2x Duct Tape
+	4x Tire Scraps
+	5x Scrap Metal
+Repair Kit
+	Recipe
+	2.5kg
+	Repair your car's body and engine
+	10s
+	2x Duct Tape
+	6x Metal Nuts
+	8x Scrap Metal
+Gas Filter
+	Recipe
+	250g
+	Replaceable Redzone gas mask filter. Drag onto a gas mask to install it.
+	5s
+	2x Yarrow Plants
+	2x Plastic
+	10x Fabric
+Gas Mask
+	Recipe
+	1kg
+	Protects from Redzone miasma. A mask without filter only
+	reduces miasma damage by half.
+	10s
+	1x Metal Composite
+	2x Duct Tape
+	10x Animal Bones
+	20x Fabric
+Knife
+	Recipe
+	800g
+	5s
+	1x Duct Tape
+	1x Rebar
+	3x Rusty Pocketknife
+Hammer
+	Recipe
+	1.5kg
+	5s
+	1x Rusty Pipe
+	5x Wire Scraps
+	5x Scrap Metal
+Stone Hatchet
+	Recipe
+	800g
+	5s
+	1x 2x4
+	2x Stone
+	2x Fabric
+Crowbar
+	Recipe
+	1.5kg
+	5s
+	1x Hammer
+	1x Rebar
+	10x Scrap Metal
+Fishing Rod
+	Recipe
+	500g
+	5s
+	1x Rusty Pocketknife
+	2x Rebar
+	4x Fabric
+Wrench
+	Recipe
+	1.5kg
+	5s
+	1x Hammer
+	1x Duct Tape
+	1x Rusty Wrench
+	5x Scrap Metal
+Antibiotics A
+	Recipe
+	100g
+	To reduce your contamination levels from
+	zombie bites
+	15s
+	2x Tampon
+	2x Rubbing Alcohol
+First Aid Kit
+	Recipe
+	500g
+	8s
+	2x Tampon
+	2x Plastic
+Improvised Ban...
+	Recipe
+	100g
+	5s
+	1x Cork
+	1x Duct Tape
+	5x Dirty Clothes
+Dirty Bandage
+	Recipe
+	50g
+	5s
+	1x Rusty Pocketknife
+	5x Dirty Clothes
+Tactical Tampon
+	Recipe
+	50g
+	5s
+	4x Tampon
+Adrenaline Shot
+	Recipe
+	100g
+	use to increase body resistance
+	10s
+	3x Yarrow Plants
+	4x Pumpkin
+	Sx Cabbage
+Vitamin Injection
+	Recipe
+	100g
+	use to increase stamina
+	8s
+	2x Yarrow Plants
+	3x Sunflower
+	3x Beetroot
+Adrenaline Injec...
+	Recipe
+	100g
+	use to increase health
+	8s
+	1x Tactical Tampon
+	3x Tomato
+	3x Radish
+	4x Yarrow Plants
+Crossbow Bolt
+	Recipe
+	4g
+	10s
+	1x Duct Tape
+	5x Scrap Metal
+	10x Rusty Nails
+Nail Ammo
+	Recipe
+	4g
+	10s
+	1x Duct Tape
+	5x Scrap Metal
+	10x Rusty Nails
+Crossbow
+	Recipe
+	2kg
+	10s
+	5x Duct Tape
+	20x Rubber
+	100x Scrap Metal
+Barb Wire
+	Recipe
+	2kg
+	10s
+	1x 2x4
+	10x Scrap Metal
+	10x Rusty Nails
+Nail Gun
+	Recipe
+	1kg
+	100s
+	5x Duct Tape
+	6x 9V Battery
+	100x Scrap Metal
+	Rabbit Satay
+	Recipe
+	100g
+	5s
+	1x Bag of Rice
+	2x Raw Rabbit
+	2x Onion
+Coriander Chicken
+	Recipe
+	100g
+	5s
+	1x Bag of Flour
+	2x Garlic
+	2x Raw Chicken
+Juice Watermelon
+	Recipe
+	100g
+	5s
+	2x Water
+	3x Bag of Sugar
+	5x Watermelon
+Juice Corn
+	Recipe
+	100g
+	5s
+	2x Water
+	3x Bag of Sugar
+	5x Corn
+Meat Stew
+	Recipe
+	300g
+	10s
+	1x Raw Deer
+	2x Water
+	2x Bag of Rice
+	3x Onion
+	4x Bag of Flour
+	5x Carrot
+Salad
+	Recipe
+	150g
+	5s
+	5x Cucumber
+	5x Carrot
+	5x Corn
+Fish Pop
+	Recipe
+	150g
+	5s
+	2x Bag of Rice
+	3x Bag of Flour
+	3x Onion
+	4x Garlic
+	5x Small Fish
+Meat Stew
+	Recipe
+	300g
+	10s
+	1x Raw Boar
+	2x Water
+	2x Bag of Rice
+	3x Onion
+	4x Bag of Flour
+	5x Carrot
+Cooked Boar
+	Recipe
+	200g
+	5s
+	1x Raw Boar
+Fishy Fingers
+	Recipe
+	150g
+	5s
+	1x Bag of Rice
+	1x Bag of Flour
+	2x Big Fish
+Cooked Fish
+	Recipe
+	200g
+	5s
+	2x Small Fish
+Cooked Beef
+	Recipe
+	200g
+	5s
+	1x Raw Beef
+Cooked Chicken
+	Recipe
+	150g
+	10s	
+	1x Raw Chicken
+Cooked Rabbit
+	100g
+	10s
+	Recipe
+	1x Raw Rabbit
+Instant Nuts Drink
+	Recipe
+	100g
+	10s
+	1x Water
+	1x Bag of Flour
+	1x Bag of Sugar
+	3x Mixed Nuts
+Canteen
+	Recipe
+	200g
+	10s
+	1x Canteen
+Water
+	Recipe
+	500g
+	10s
+	1x Dirty Water

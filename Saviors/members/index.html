@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SAVIORS // Command Structure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #090B0E; }
+</style>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<section class="cmd-root" id="cmd-root">
+
+  <header class="cmd-header">
+    <div class="cmd-eyebrow">Faction Database // Restricted Access</div>
+    <h2 class="cmd-title">Saviors Command Structure</h2>
+    <p class="cmd-subtitle">Live personnel hierarchy — Warlord down to Youngblood Division</p>
+    <div class="cmd-rule"></div>
+  </header>
+
+  <div class="cmd-stats">
+    <div class="stat-cell">
+      <div class="stat-num" id="stat-total">0</div>
+      <div class="stat-label">Total Members</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" id="stat-warlord">0</div>
+      <div class="stat-label">Warlord</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" id="stat-rh">0</div>
+      <div class="stat-label">Right Hand</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" id="stat-enf">0</div>
+      <div class="stat-label">Enforcer</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" id="stat-yb">0</div>
+      <div class="stat-label">Youngblood</div>
+    </div>
+  </div>
+
+  <div class="cmd-spec-stats" id="cmd-spec-stats"></div>
+
+  <div class="cmd-controls">
+    <div class="cmd-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="cmd-search-input" placeholder="Search by name or member code..." autocomplete="off" />
+    </div>
+
+    <div class="cmd-filters">
+      <button class="filter-btn active" data-filter="ALL">All</button>
+      <button class="filter-btn" data-filter="MEDIC">Medic</button>
+      <button class="filter-btn" data-filter="ENGINEER">Engineer</button>
+      <button class="filter-btn" data-filter="SCAVENGER">Scavenger</button>
+      <button class="filter-btn" data-filter="SURVIVALIST">Survivalist</button>
+    </div>
+
+    <div class="cmd-zoom-controls">
+      <button class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
+      <button class="zoom-btn" id="zoom-reset" aria-label="Reset zoom" style="font-size:11px;">⤾</button>
+      <button class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
+    </div>
+  </div>
+
+  <div class="cmd-canvas-wrap" id="cmd-canvas-wrap">
+    <div class="cmd-canvas" id="cmd-canvas"></div>
+    <div class="cmd-canvas-hint">Scroll to zoom · Drag to pan · Click division to expand</div>
+  </div>
+
+</section>
+
+<div class="dossier-overlay" id="dossier-overlay"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

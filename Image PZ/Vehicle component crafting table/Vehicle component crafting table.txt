@@ -1,0 +1,76 @@
+Vehicle Suspension
+	Recipe
+	2kg
+	10s
+	5x Metal Pipes
+	25x Scrap Metal
+Ignition Module
+	Recipe
+	500g
+	A vehicle ignition module
+	10s
+	3x Metal Pipes
+	7x Scrap Metal
+Large Gear
+	Recipe
+	400g
+	10s
+	20x Scrap Metal
+Radiator
+	Recipe
+	2kg
+	10s
+	3x Wire Scraps
+	6x Scrap Metal
+Fuel Injector
+	Recipe
+	300g
+	10s
+	4x Scrap Metal
+	5x Wire Scraps
+Drive Shaft
+	Recipe
+	2kg
+	10s
+	8x Metal Pipes
+	9x Scrap Metal
+Frame
+	Recipe
+	5kg
+	A vehicle frames
+	10s
+	3x Metal Pipes
+	7x Scrap Metal
+Axles
+	Recipe
+	3 kg
+	Vehicle axles
+	10s
+	3x Metal Pipes
+	7x Scrap Metal
+Transmission
+	Recipe
+	4kg
+	A vehicle transmission
+	10s
+	2x Oil Filter
+	3x Metal Pipes
+	7x Scrap Metal
+Brakes
+	Recipe
+	2kg
+	Vehicle brakes
+	10s
+	2x Oil Filter
+	4x Rubber
+	6x Scrap Metal
+Engine
+	Recipe
+	8kg
+	A vehicle engine
+	10s
+	1x Radiator
+	1x Fuel Injector
+	2x Metal Nuts
+	2x Oil Filter
+	6x Scrap Metal

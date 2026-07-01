@@ -1,0 +1,18 @@
+Gas Filter
+	Recipe
+	250g
+	Replaceable Redzone gas mask filter. Drag onto a gas mask to install it.
+	5s
+	2x Yarrow Plants
+	2x Plastic
+	10x Fabric
+Gas Mask
+	Recipe
+	1kg
+	Protects from Redzone miasma. A mask without filter only
+	reduces miasma damage by half.
+	10s
+	1x Metal Composite
+	2x Duct Tape
+	10x Animal Bones
+	20x Fabric

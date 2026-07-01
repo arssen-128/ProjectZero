@@ -1,0 +1,25 @@
+BMX Bike
+	Recipe
+	5kg
+	10s
+	1x Bike Tire
+	1x Large Gear
+	1x Bike Chain
+	5x Duct Tape
+	25x Scrap Metal
+Bike Tire
+	Recipe
+	300g
+	10s
+	2x Duct Tape
+	15x Scrap Metal
+Bike Chain
+	Recipe
+	150g
+	10s
+	25x Scrap Metal
+Large Gear
+	Recipe
+	400g
+	10s
+	20x Scrap Metal

@@ -1,0 +1,24 @@
+Food & Water
+	Common
+		Dirty Water.png
+		Fish Bait.png
+		Frame 15.png
+		Frame 94.png
+		Raw Beef.png
+		Raw Bird.png
+		Raw Boar.png
+		Raw Chicken.png
+		Raw Coyote.png
+		Raw Rabbit.png
+		Small Fish.png
+	Epic
+	Mythic
+	Rare
+		Bag of Flour.png
+		Bag of Rice.png
+		Bag of Sugar.png
+		Big Fish.png
+	Uncommon
+		Cooked beef.png
+		Frame 16.png
+		Water.png

@@ -1,0 +1,133 @@
+```text
+Struktur Folder:
+
+scrap machine/
+│
+├── !scrap machine.png
+│
+├── Air Bags/
+│   ├── Air Bags.png
+│   └── Output/
+│       └── Fabric.png
+│
+├── Bolt/
+│   ├── Bolt.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Broken ATM/
+│   ├── Broken ATM.png
+│   └── Output/
+│       └── Plastic.png
+│
+├── Broken Gear/
+│   ├── Broken Gear.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Dirty Cloth/
+│   ├── Dirty Cloth.png
+│   └── Output/
+│       └── Fabric.png
+│
+├── Frayed Rope/
+│   ├── Frayed Rope.png
+│   └── Output/
+│       └── Fabric.png
+│
+├── Hair Pick/
+│   ├── Hair Pick.png
+│   └── Output/
+│       └── Plastic.png
+│
+├── Jumper Cables/
+│   ├── Jumper Cables.png
+│   └── Output/
+│       ├── Rubber.png
+│       └── Scrap Metal.png
+│
+├── Metal Nuts/
+│   ├── Metal Nuts.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Oil Filter/
+│   ├── Oil Filter.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Old Shoes/
+│   ├── Old Shoes.png
+│   └── Output/
+│       └── Rubber.png
+│
+├── Old Wallet/
+│   ├── Old Wallet.png
+│   └── Output/
+│       └── Leather.png
+│
+├── PB Gloves/
+│   ├── PB Gloves.png
+│   └── Output/
+│       ├── Fabric.png
+│       └── Plastic.png
+│
+├── Phone Charger/
+│   ├── Phone Charger.png
+│   └── Output/
+│       └── Wire Scraps.png
+│
+├── Piece of Kevlar/
+│   ├── Piece of Kevlar.png
+│   └── Output/
+│       └── Fabric.png
+│
+├── Plate Holder/
+│   ├── Plate Holder.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Rusty Nails/
+│   ├── Rusty Nails.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Rusty Pocket Knife/
+│   ├── Rusty Pocket Knife.png
+│   └── Output/
+│       ├── Plastic.png
+│       └── Scrap Metal.png
+│
+├── Rusty Screws/
+│   ├── Rusty Screws.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Rusty Wrench/
+│   ├── Rusty Wrench.png
+│   └── Output/
+│       ├── Duct Tape.png
+│       └── Scrap Metal.png
+│
+├── Shampoo Bottle/
+│   ├── Shampoo Bottle.png
+│   └── Output/
+│       └── Plastic.png
+│
+├── Spark Plugs/
+│   ├── Spark Plugs.png
+│   └── Output/
+│       └── Scrap Metal.png
+│
+├── Tire Scraps/
+│   ├── Tire Scraps.png
+│   └── Output/
+│       ├── Rubber.png
+│       └── Scrap Metal.png
+│
+└── Wire Scraps/
+    ├── Wire Scraps.png
+    └── Output/
+        ├── Plastic.png
+        └── Rubber.png
+```

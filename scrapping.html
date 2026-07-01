@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Zero - Scrapping</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #0b0d11;
+            color: white;
+            padding: 60px;
+            background-image:
+                radial-gradient(circle at top, #1c2028 0%, #0b0d11 60%);
+        }
+        /*=========================
+PAGE TITLE
+=========================*/
+        .pageTitle {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .pageTitle h1 {
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        .pageTitle span {
+            color: #F59E0B;
+        }
+        .pageTitle p {
+            margin-top: 12px;
+            font-size: 18px;
+            color: #9ca3af;
+        }
+        /*=========================
+HEADER
+=========================*/
+        .machineCard {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            background: #15191F;
+            border: 1px solid #313844;
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, .45);
+        }
+        /*=========================
+LEFT
+=========================*/
+        .machineImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .machineImage img {
+            width: 420px;
+            height: 420px;
+            object-fit: contain;
+            background: #0f1319;
+            border-radius: 18px;
+            padding: 20px;
+            border: 5px solid #343b47;
+        }
+        /*=========================
+RIGHT
+=========================*/
+        .machineInfo h2 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .machineInfo .subtitle {
+            color: #F59E0B;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        /*=========================
+INFO GRID
+=========================*/
+        .infoGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+        .infoBox {
+            background: #1B2028;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #303844;
+        }
+        .infoBox label {
+            display: block;
+            font-size: 13px;
+            color: #8f96a3;
+            margin-bottom: 8px;
+        }
+        .infoBox span {
+            font-size: 17px;
+            font-weight: 600;
+        }
+        /*=========================
+HOW TO
+=========================*/
+        .guide {
+            background: #1B2028;
+            border: 1px solid #303844;
+            border-radius: 14px;
+            padding: 25px;
+        }
+        .guide h3 {
+            color: #F59E0B;
+            margin-bottom: 18px;
+            font-size: 22px;
+        }
+        .guide ol {
+            padding-left: 20px;
+            line-height: 2;
+            color: #d1d5db;
+        }
+        /*=========================
+RESPONSIVE
+=========================*/
+        @media(max-width:900px) {
+            .machineCard {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .machineImage {
+                order: -1;
+            }
+            .infoGrid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /*========================================
+PART 2
+========================================*/
+        .gallerySection {
+            max-width: 1200px;
+            margin: 70px auto 0;
+        }
+        .sectionHeader {
+            margin-bottom: 25px;
+        }
+        .sectionHeader h2 {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .sectionHeader p {
+            color: #9CA3AF;
+        }
+        /* SEARCH */
+        .searchArea {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #171C24;
+            border: 1px solid #303844;
+            border-radius: 14px;
+            padding: 0 20px;
+            margin: 25px 0;
+        }
+        .searchArea iconify-icon {
+            font-size: 24px;
+            color: #888;
+        }
+        .searchArea input {
+            flex: 1;
+            height: 60px;
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 17px;
+            color: white;
+        }
+        /* FILTER */
+        .categoryFilter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+        .categoryFilter button {
+            padding: 12px 22px;
+            border-radius: 50px;
+            background: #1B2028;
+            border: 1px solid #313844;
+            color: #ddd;
+            cursor: pointer;
+            font-size: 15px;
+            transition: .25s;
+        }
+        .categoryFilter button:hover {
+            background: #252C37;
+        }
+        .categoryFilter .active {
+            background: #F59E0B;
+            color: #111;
+            font-weight: 700;
+        }
+        /* GRID */
+        .itemGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 22px;
+        }
+        /* CARD */
+        .itemCard {
+            background: #171B22;
+            border: 1px solid #303844;
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .itemCard:hover {
+            transform: translateY(-6px);
+            border-color: #F59E0B;
+            box-shadow:
+                0 20px 45px rgba(0, 0, 0, .45);
+        }
+        .itemCard img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin: auto;
+            display: block;
+            margin-bottom: 18px;
+        }
+        .itemCard h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+        .itemCard span {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 30px;
+            background: #222934;
+            font-size: 13px;
+            color: #F59E0B;
+        }
+        /*=====================================
+PART 3
+======================================*/
+        .calculatorSection {
+            max-width: 1200px;
+            margin: 80px auto;
+        }
+        .calculatorCard {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 40px;
+            padding: 35px;
+            background: #171B22;
+            border: 1px solid #313844;
+            border-radius: 22px;
+        }
+        .calculatorLeft {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .calculatorLeft img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            background: #0f1319;
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid #303844;
+        }
+        .calculatorRight h2 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+        .category {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #F59E0B;
+            font-weight: 600;
+        }
+        .calculatorInfo {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+        .calculatorInfo div {
+            background: #1F252E;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #313844;
+        }
+        .calculatorInfo label {
+            display: block;
+            font-size: 13px;
+            color: #9CA3AF;
+            margin-bottom: 8px;
+        }
+        .calculatorInfo strong {
+            font-size: 20px;
+        }
+        .scrapControl {
+            margin-bottom: 30px;
+        }
+        .scrapControl label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .scrapControl input {
+            width: 100%;
+            height: 55px;
+            background: #1F252E;
+            border: 1px solid #313844;
+            border-radius: 12px;
+            padding: 0 16px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: .25s;
+        }
+        .scrapButton {
+            height: 60px;
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            background: #F59E0B;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            transition: .25s;
+        }
+        .scrapButton:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 15px 30px rgba(245, 158, 11, .30);
+        }
+        .scrapButton iconify-icon {
+            font-size: 24px;
+        }
+        @media(max-width:900px) {
+            .calculatorCard {
+                grid-template-columns: 1fr;
+            }
+            .calculatorInfo {
+                grid-template-columns: 1fr;
+            }
+        }
+        /*=========================================
+PART 4
+==========================================*/
+        .outputSection {
+            max-width: 1200px;
+            margin: 80px auto;
+        }
+        .outputCard {
+            background: #171B22;
+            border: 1px solid #303844;
+            border-radius: 20px;
+            padding: 30px;
+        }
+        .outputHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2e3642;
+        }
+        .outputHeader h3 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        .outputHeader span {
+            color: #9CA3AF;
+        }
+        .outputHeader button {
+            background: #22C55E;
+            border: none;
+            color: white;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .outputHeader button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(34, 197, 94, .25);
+        }
+        .outputGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .outputItem {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px;
+            background: #1D232D;
+            border-radius: 14px;
+            border: 1px solid #303844;
+            transition: .25s;
+        }
+        .outputItem:hover {
+            border-color: #F59E0B;
+            transform: translateY(-3px);
+        }
+        .outputItem img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            background: #11161d;
+            padding: 8px;
+            border-radius: 12px;
+        }
+        .outputItem h4 {
+            margin-bottom: 4px;
+            font-size: 18px;
+        }
+        .outputItem small {
+            color: #9CA3AF;
+        }
+        .outputItem strong {
+            margin-left: auto;
+            font-size: 26px;
+            color: #F59E0B;
+            font-weight: 800;
+        }
+        @media(max-width:850px) {
+            .outputHeader {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .outputHeader button {
+                width: 100%;
+            }
+        }
+        /*==============================
+SHOW / HIDE SECTION
+==============================*/
+        .hidden {
+            display: none;
+        }
+        .show {
+            display: block;
+            animation: fadeUp .45s ease;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pageTitle">
+        <h1>SCRAP <span>MACHINE</span></h1>
+        <p>Break unwanted items into valuable crafting materials.</p>
+    </div>
+    <div class="machineCard">
+        <div class="machineImage">
+            <img src="images/!scrap machine.png">
+        </div>
+        <div class="machineInfo">
+            <h2>Scrap Machine</h2>
+            <div class="subtitle">
+                Salvage Station
+            </div>
+            <div class="infoGrid">
+                <div class="infoBox">
+                    <label>Location</label>
+                    <span>Safe Zone</span>
+                </div>
+                <div class="infoBox">
+                    <label>Station Type</label>
+                    <span>Scrap Machine</span>
+                </div>
+                <div class="infoBox">
+                    <label>Purpose</label>
+                    <span>Recycle Items</span>
+                </div>
+                <div class="infoBox">
+                    <label>Available</label>
+                    <span>24 Hours</span>
+                </div>
+            </div>
+            <div class="guide">
+                <h3>How to Use</h3>
+                <ol>
+                    <li>Go to the Safe Zone.</li>
+                    <li>Interact with the Scrap Machine.</li>
+                    <li>Select an item you want to dismantle.</li>
+                    <li>Choose the amount to scrap.</li>
+                    <li>Receive crafting materials instantly.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- ========================= -->
+    <!-- PART 2 : ITEM GALLERY -->
+    <!-- ========================= -->
+    <section class="gallerySection">
+        <div class="sectionHeader">
+            <h2>Scrappable Items</h2>
+            <p>
+                Select an item below to calculate the scrap output.
+            </p>
+        </div>
+        <div class="searchArea">
+            <iconify-icon icon="mdi:magnify"></iconify-icon>
+            <input id="search" type="text" placeholder="Search item...">
+        </div>
+        <div class="categoryFilter" id="categoryFilter">
+        </div>
+        <div class="itemGrid" id="scrapGrid">
+        </div>
+        </div>
+    </section>
+    <!-- ========================= -->
+    <!-- PART 3 : SCRAP CALCULATOR -->
+    <!-- ========================= -->
+    <section id="calculatorSection" class="calculatorSection hidden">
+        <div class="sectionHeader">
+            <h2>Scrap Calculator</h2>
+            <p>
+                Select how many items you want to dismantle.
+            </p>
+        </div>
+        <div class="calculatorCard" id="calculatorCard">
+        </div>
+    </section>
+    <!-- ========================= -->
+    <!-- PART 4 : SCRAP OUTPUT -->
+    <!-- ========================= -->
+    <section id="outputSection" class="outputSection hidden">
+        <div class="sectionHeader">
+            <h2>Scrap Result</h2>
+            <p>
+                Materials that will be obtained after dismantling the selected item.
+            </p>
+        </div>
+        <div class="outputCard" id="outputCard">
+        </div>
+        </div>
+    </section>
+    <script>
+        function renderScrapItems(list = DB.scrap_recipes) {
+            const grid = document.getElementById("scrapGrid");
+            grid.innerHTML = "";
+            list.forEach(recipe => {
+                const item = getItem(recipe.input_item_id);
+                if (!item) return;
+                grid.innerHTML += `
+        <div
+        class="itemCard"
+        onclick="selectScrapItem(${item.id})">
+            <img
+            src="images/${item.image}"
+            onerror="this.src='images/no-image.png'">
+            <h3>${item.name}</h3>
+            <span>
+                Minimum :
+                ${recipe.minimum_input}
+            </span>
+        </div>
+        `;
+            });
+        }
+        document
+            .getElementById("search")
+            .addEventListener("input", function () {
+                const keyword = this.value.toLowerCase();
+                const result = DB.scrap_recipes.filter(recipe => {
+                    const item = getItem(recipe.input_item_id);
+                    return item.name
+                        .toLowerCase()
+                        .includes(keyword);
+                });
+                renderScrapItems(result);
+            });
+        function getItem(id) {
+            return DB.items.find(i => i.id == id);
+        }
+        let DB = {};
+        fetch("project_zero.json")
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(table => {
+                    if (table.type === "table") {
+                        DB[table.name] = table.data;
+                    }
+                });
+                renderScrapItems();
+            });
+        function selectScrapItem(id) {
+            const recipe = DB.scrap_recipes.find(r => r.input_item_id == id);
+            const item = getItem(id);
+            document.getElementById("calculatorCard").innerHTML = `
+                <div class="calculatorLeft">
+                    <img
+                    src="images/${item.image}"
+                    onerror="this.src='images/no-image.png'">
+                </div>
+                <div class="calculatorRight">
+                    <h2>${item.name}</h2>
+                    <span class="category">
+                        Scrap Item
+                    </span>
+                    <div class="calculatorInfo">
+                        <div>
+                            <label>Minimum Input</label>
+                            <strong>${recipe.minimum_input}</strong>
+                        </div>
+                        <div>
+                            <label>Items Required</label>
+                            <strong id="requiredItems">${recipe.minimum_input}</strong>
+                        </div>
+                    </div>
+                    <div class="scrapControl">
+                        <label>Scrap Process</label>
+                        <input
+                            id="scrapAmount"
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="1"
+                        >
+                    </div>
+                    <button
+                    class="scrapButton"
+                    onclick="calculateScrap(${id})">
+                        SCRAP
+                    </button>
+                </div>
+            `;
+            openCalculator();
+        }
+        function openCalculator() {
+            const calc = document.getElementById("calculatorSection");
+            calc.classList.remove("hidden");
+            calc.classList.add("show");
+            calc.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+        function calculateScrap(id) {
+            const recipe = DB.scrap_recipes.find(r => r.input_item_id == id);
+            const item = getItem(id);
+            const process = Number(document.getElementById("scrapAmount").value);
+            const amount = process * Number(recipe.minimum_input);
+            const multiplier = process;
+            const outputs = DB.scrap_outputs.filter(o => o.scrap_recipe_id == recipe.id);
+            let itemsHTML = "";
+            outputs.forEach(o => {
+                const material = getItem(o.output_item_id);
+                const total = Number(o.quantity) * multiplier;
+                itemsHTML += `
+            <div class="outputItem">
+                <img
+                    src="images/${material.image}"
+                    onerror="this.src='images/no-image.png'">
+                <div>
+                    <h4>${material.name}</h4>
+                    <small>${material.category}</small>
+                </div>
+                <strong>x${total}</strong>
+            </div>
+        `;
+            });
+            document.getElementById("outputCard").innerHTML = `
+        <div class="outputHeader">
+            <div>
+                <h3>
+                    ${item.name}
+                    <br>
+                    <small>Consumes ${amount} Items</small>
+                </h3>
+                <span>Total Output Materials</span>
+            </div>
+        </div>
+        <div class="outputGrid">
+            ${itemsHTML}
+        </div>
+    `;
+            const output = document.getElementById("outputSection");
+            output.classList.remove("hidden");
+            output.classList.add("show");
+            output.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    </script>
+</body>
+</html>

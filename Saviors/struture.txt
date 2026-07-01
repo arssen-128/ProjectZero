@@ -1,0 +1,19 @@
+projectzero/
+
+│
+├── index.html          (website utama)
+│
+├── items/
+│      item_database.html   ← kita buat ini
+│
+├── assets/
+│      items/
+│            crossbow.png
+│            scrap.png
+│            ...
+│
+├── css/
+│      items.css
+│
+└── js/
+       items.js

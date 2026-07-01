@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Zero Database</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --bg:           #0d0c0a;
+  --bg2:          #111009;
+  --surface:      #181510;
+  --surface2:     #1e1b14;
+  --surface3:     #252018;
+  --border:       #2e2820;
+  --border2:      #3c3428;
+  --orange:       #c8651a;
+  --orange2:      #e07a20;
+  --orange-dim:   rgba(200,101,26,.12);
+  --orange-glow:  rgba(200,101,26,.25);
+  --orange-faint: rgba(200,101,26,.06);
+  --text:         #d4c9b0;
+  --text2:        #8e8272;
+  --text3:        #55503f;
+  --rust:         #7a3e12;
+  --danger:       #9b2c2c;
+  --mono:         'Share Tech Mono', monospace;
+  --display:      'Rajdhani', sans-serif;
+  --body:         'Barlow', sans-serif;
+  --radius:       2px;
+  --radius2:      4px;
+  --transition:   200ms ease;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--body);
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .4;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--rust); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+/* ============================================================
+   LAYOUT WRAPPER
+   ============================================================ */
+#app {
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  position: relative;
+  padding: 56px 0 40px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 2px;
+  background: var(--orange);
+  box-shadow: 0 0 18px var(--orange-glow);
+}
+
+/* Decorative corner marks */
+header::before {
+  content: '// CLASSIFIED DATABASE //';
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  color: var(--text3);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.title-block {
+  display: inline-block;
+  position: relative;
+}
+
+.title-block h1 {
+  font-family: var(--display);
+  font-size: clamp(42px, 7vw, 88px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.title-block h1 span {
+  color: var(--orange);
+  text-shadow: 0 0 40px var(--orange-glow), 0 0 80px rgba(200,101,26,.15);
+}
+
+.subtitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .28em;
+  color: var(--text2);
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/* Status strip */
+.status-strip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+
+.search-inner {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+}
+
+.search-inner svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  pointer-events: none;
+  transition: color var(--transition);
+}
+
+#search {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  padding: 13px 16px 13px 46px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  letter-spacing: .03em;
+}
+
+#search::placeholder { color: var(--text3); }
+
+#search:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px var(--orange-dim), 0 0 20px var(--orange-dim);
+}
+
+#search:focus ~ svg,
+.search-inner:focus-within svg { color: var(--orange); }
+
+/* ============================================================
+   GRID
+   ============================================================ */
+#grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  animation: card-in 320ms both ease-out;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scan-line top accent */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0;
+  transition: opacity var(--transition);
+  z-index: 2;
+}
+
+/* Shine sweep */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,200,120,.06) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 550ms ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border2);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5), 0 0 0 1px var(--orange), 0 0 20px var(--orange-dim);
+}
+
+.card:hover::before { opacity: 1; }
+.card:hover::after  { transform: translateX(100%); }
+
+.card-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  transition: transform 300ms ease;
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover img { transform: scale(1.08); }
+
+/* Corner brackets on image hover */
+.card-img-wrap::before,
+.card-img-wrap::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+.card-img-wrap::before {
+  top: 6px; left: 6px;
+  border-top: 1px solid var(--orange);
+  border-left: 1px solid var(--orange);
+}
+.card-img-wrap::after {
+  bottom: 6px; right: 6px;
+  border-bottom: 1px solid var(--orange);
+  border-right: 1px solid var(--orange);
+}
+.card:hover .card-img-wrap::before,
+.card:hover .card-img-wrap::after { opacity: 1; }
+
+.card-body {
+  padding: 10px 12px 12px;
+}
+
+.card-body h3 {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.card-body p {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   POPUP OVERLAY
+   ============================================================ */
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.78);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.popup.show { opacity: 1; }
+
+.popup.show .popupBox {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.popupBox {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius2);
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(200,101,26,.15);
+  transform: scale(.96) translateY(12px);
+  opacity: 0;
+  transition: transform 280ms cubic-bezier(.22,.61,.36,1), opacity 280ms ease;
+}
+
+/* Top bar */
+.popupBox::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--orange) 30%, var(--orange2) 60%, transparent);
+}
+
+/* Close */
+.close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 13px;
+  z-index: 10;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.close:hover {
+  background: var(--danger);
+  border-color: #c53030;
+  color: #fff;
+}
+
+/* ============================================================
+   POPUP CONTENT LAYOUT
+   ============================================================ */
+#popupContent {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+}
+
+/* LEFT: image panel */
+.popup-img-panel {
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  position: relative;
+}
+
+.popup-img-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+}
+
+.popup-img-panel img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 20px rgba(200,101,26,.2));
+}
+
+/* RIGHT: details panel */
+.popup-details {
+  padding: 28px 28px 32px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   POPUP TYPOGRAPHY
+   ============================================================ */
+.popupTitle {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 4px;
+  padding-right: 36px;
+}
+
+.popupCategory {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* ============================================================
+   INFO GRID
+   ============================================================ */
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.infoBox {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.infoBox:hover {
+  border-color: var(--orange);
+  box-shadow: 0 0 12px var(--orange-dim);
+}
+
+.infoBox span {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .16em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.infoBox > *:not(span):last-child {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: .03em;
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section {
+  margin-bottom: 18px;
+}
+
+.section h3 {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.section h3::before {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 40px; height: 1px;
+  background: var(--orange);
+}
+
+.section p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   RECIPE / LOOT / SCRAP ROWS
+   ============================================================ */
+.section ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text);
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.section ul li:hover {
+  border-left-color: var(--orange);
+  background: var(--orange-faint);
+}
+
+/* Material name */
+.section ul li .mat-name {
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Quantity badge */
+.section ul li .mat-qty {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--orange2);
+  background: var(--orange-dim);
+  border: 1px solid rgba(200,101,26,.25);
+  border-radius: 2px;
+  padding: 2px 8px;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+
+/* Chance badge */
+.section ul li .mat-chance {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  letter-spacing: .06em;
+}
+
+/* Station / time rows */
+.section ul li.meta-row {
+  border-left-color: var(--border2);
+  background: var(--bg2);
+}
+.section ul li.meta-row .meta-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+.section ul li.meta-row .meta-value {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+/* Empty state */
+.section ul li.empty {
+  color: var(--text3);
+  font-style: italic;
+  font-size: 12px;
+  justify-content: flex-start;
+  border-left-color: var(--border);
+  background: transparent;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 700px) {
+  #popupContent { grid-template-columns: 1fr; }
+  .popup-img-panel { border-right: none; border-bottom: 1px solid var(--border); padding: 24px; }
+  .popup-img-panel img { width: 110px; height: 110px; }
+  .popup-details { padding: 20px; }
+  .popupTitle { font-size: 20px; }
+  .infoGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 420px) {
+  #app { padding: 0 14px 60px; }
+  #grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .infoGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1280px) {
+  #grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); }
+}
+
+@media (min-width: 1600px) {
+  #grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     POPUP
+     ============================================================ -->
+<div id="popup" class="popup" onclick="if(event.target===this)closePopup();">
+  <div class="popupBox">
+    <span class="close" onclick="closePopup()">✖</span>
+    <div id="popupContent"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     APP
+     ============================================================ -->
+<div id="app">
+
+  <header>
+    <div class="title-block">
+      <h1>PROJECT <span>ZERO</span></h1>
+      <div class="subtitle">Interactive Survival Database</div>
+    </div>
+    <div class="status-strip">
+      <div class="status-item"><span class="status-dot"></span>System Online</div>
+      <div class="status-item">·</div>
+      <div class="status-item">Classification: RESTRICTED</div>
+      <div class="status-item">·</div>
+      <div class="status-item">Sector 7 — Safehouse Alpha</div>
+    </div>
+  </header>
+
+  <div class="search-wrapper">
+    <div class="search-inner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="search" placeholder="Search items, categories…" autocomplete="off" spellcheck="false">
+    </div>
+  </div>
+
+  <div id="grid"></div>
+
+</div><!-- /#app -->
+
+<!-- ============================================================
+     JAVASCRIPT (original logic preserved, render() patched for new markup)
+     ============================================================ -->
+<script>
+  let DB = {};
+  let ITEMS = [];
+
+  fetch("project_zero.json")
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(table => {
+        if (table.type === "table") {
+          DB[table.name] = table.data;
+        }
+      });
+      console.log(DB);
+      ITEMS = DB.items;
+      console.log("Items :", DB.items.length);
+      console.log("Recipes :", DB.recipes.length);
+      console.log("Recipe Materials :", DB.recipe_materials.length);
+      console.log("Loot Sources :", DB.loot_sources.length);
+      console.log("Loot Items :", DB.loot_items.length);
+      console.log("Scrap Recipes :", DB.scrap_recipes.length);
+      console.log("Scrap Outputs :", DB.scrap_outputs.length);
+      render(ITEMS);
+    });
+
+  function render(list) {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    list.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.animationDelay = `${index * 12}ms`;
+      card.onclick = () => showItem(item.id);
+      card.innerHTML = `
+        <div class="card-img-wrap">
+          <img src="images/${item.image}" onerror="this.src='images/no-image.png'" alt="${item.name}">
+        </div>
+        <div class="card-body">
+          <h3>${item.name}</h3>
+          <p>${item.category}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById("search").addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
+    const result = ITEMS.filter(i =>
+      i.name.toLowerCase().includes(keyword) ||
+      (i.category ?? "").toLowerCase().includes(keyword)
+    );
+    render(result);
+  });
+
+  function getRecipe(itemId)         { return DB.recipes.find(r => r.output_item_id == itemId); }
+  function getRecipeMaterials(recipeId) { return DB.recipe_materials.filter(r => r.recipe_id == recipeId); }
+  function getItem(id)               { return DB.items.find(i => i.id == id); }
+  function getLoot(itemId)           { return DB.loot_items.filter(l => l.item_id == itemId); }
+  function getLootSource(id)         { return DB.loot_sources.find(s => s.id == id); }
+  function getScrap(itemId)          { return DB.scrap_recipes.find(s => s.input_item_id == itemId); }
+  function getScrapOutputs(scrapId)  { return DB.scrap_outputs.filter(s => s.scrap_recipe_id == scrapId); }
+  function getTags(itemId)           { return DB.item_tags?.filter(t => t.item_id == itemId) ?? []; }
+  function getStation(id)            { return DB.crafting_stations?.find(s => s.id == id); }
+
+  function buildRow(left, right, cls = '') {
+    return `<li class="${cls}"><span class="mat-name">${left}</span><span class="mat-qty">${right}</span></li>`;
+  }
+  function buildMeta(label, value) {
+    return `<li class="meta-row"><span class="meta-label">${label}</span><span class="meta-value">${value}</span></li>`;
+  }
+  function buildEmpty(msg) {
+    return `<li class="empty">${msg}</li>`;
+  }
+
+  function showItem(id) {
+    const item = getItem(id);
+    const recipe = getRecipe(id);
+
+    let craftHTML = buildEmpty("Not craftable");
+    let lootHTML  = buildEmpty("No loot source found");
+    let scrapHTML = buildEmpty("Cannot be scrapped");
+
+    if (recipe) {
+      const mats = getRecipeMaterials(recipe.id);
+      console.log(recipe);
+      console.table(mats);
+      craftHTML = mats.map(mat => {
+        const material = getItem(mat.material_item_id);
+        return buildRow(material.name, `×${mat.quantity}`);
+      }).join('');
+      const station = getStation(recipe.station_id);
+      if (station) craftHTML += buildMeta('Crafting Station', station.name);
+      craftHTML += buildMeta('Craft Time', `${recipe.craft_time}s`);
+    }
+
+    const loots = getLoot(id);
+    if (loots.length) {
+      lootHTML = loots.map(l => {
+        const source = getLootSource(l.loot_source_id);
+        return `<li><span class="mat-name">${source.name}</span><span class="mat-chance">${l.chance}%</span></li>`;
+      }).join('');
+    }
+
+    const scrap = getScrap(id);
+    if (scrap) {
+      const outputs = getScrapOutputs(scrap.id);
+      scrapHTML = outputs.map(o => {
+        const output = getItem(o.output_item_id);
+        return buildRow(output.name, `×${o.quantity}`);
+      }).join('');
+    }
+
+    const popup = document.getElementById("popup");
+    popup.style.display = "flex";
+    requestAnimationFrame(() => {
+      popup.classList.add("show");
+    });
+
+    document.getElementById("popupContent").innerHTML = `
+      <div class="popup-img-panel">
+        <img src="images/${item.image}" onerror="this.src='images/no-image.png'" alt="${item.name}">
+      </div>
+      <div class="popup-details">
+        <div class="popupTitle">${item.name}</div>
+        <div class="popupCategory">${item.category}</div>
+
+        <div class="infoGrid">
+          <div class="infoBox">
+            <span>Sub Category</span>
+            ${item.sub_category ?? '—'}
+          </div>
+          <div class="infoBox">
+            <span>Inventory Size</span>
+            ${item.inventory_size ?? '—'}
+          </div>
+          <div class="infoBox">
+            <span>Stackable</span>
+            ${item.stackable == 1 ? 'Yes' : 'No'}
+          </div>
+          <div class="infoBox">
+            <span>Item ID</span>
+            ${item.id}
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Description</h3>
+          <p>No description available.</p>
+        </div>
+
+        <div class="section">
+          <h3>Craft Recipe</h3>
+          <ul>${craftHTML}</ul>
+        </div>
+
+        <div class="section">
+          <h3>Loot Source</h3>
+          <ul>${lootHTML}</ul>
+        </div>
+
+        <div class="section">
+          <h3>Scrap Result</h3>
+          <ul>${scrapHTML}</ul>
+        </div>
+      </div>
+    `;
+  }
+
+  function closePopup() {
+    const popup = document.getElementById("popup");
+    popup.classList.remove("show");
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 250);
+  }
+</script>
+</body>
+</html>

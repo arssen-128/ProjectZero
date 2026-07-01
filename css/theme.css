@@ -1,0 +1,411 @@
+/* ==========================================================
+   PROJECT ZERO - GLOBAL THEME
+   theme.css
+   ========================================================== */
+
+/* ===============================
+   GOOGLE FONT
+=============================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
+
+/* ===============================
+   DESIGN TOKENS
+=============================== */
+
+:root{
+
+    --bg:#0d0c0a;
+    --bg2:#111009;
+
+    --surface:#181510;
+    --surface2:#1e1b14;
+    --surface3:#252018;
+
+    --border:#2e2820;
+    --border2:#3c3428;
+
+    --orange:#c8651a;
+    --orange2:#e07a20;
+
+    --orangeGlow:rgba(200,101,26,.25);
+    --orangeDim:rgba(200,101,26,.12);
+    --orangeSoft:rgba(200,101,26,.05);
+
+    --text:#d4c9b0;
+    --text2:#8e8272;
+    --text3:#5d5447;
+
+    --success:#22c55e;
+    --danger:#dc2626;
+
+    --radius:6px;
+    --radiusLarge:16px;
+
+    --shadow:
+        0 20px 50px rgba(0,0,0,.45);
+
+    --transition:.25s ease;
+
+    --display:'Rajdhani',sans-serif;
+    --body:'Barlow',sans-serif;
+    --mono:'Share Tech Mono',monospace;
+
+}
+
+/* ===============================
+   RESET
+=============================== */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    background:
+    radial-gradient(circle at top,#1d2430 0%,var(--bg) 70%);
+
+    color:var(--text);
+
+    font-family:var(--body);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+/* ===============================
+   TYPOGRAPHY
+=============================== */
+
+h1,
+h2,
+h3,
+h4{
+
+    font-family:var(--display);
+
+    font-weight:700;
+
+    color:var(--text);
+
+}
+
+p{
+
+    color:var(--text2);
+
+    line-height:1.7;
+
+}
+
+small{
+
+    color:var(--text3);
+
+}
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+}
+
+/* ===============================
+   BUTTON
+=============================== */
+
+button{
+
+    cursor:pointer;
+
+    border:none;
+
+    outline:none;
+
+    transition:var(--transition);
+
+    font-family:var(--display);
+
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ===============================
+   INPUT
+=============================== */
+
+input,
+select,
+textarea{
+
+    font-family:var(--body);
+
+    color:var(--text);
+
+    background:var(--surface2);
+
+    border:1px solid var(--border);
+
+    outline:none;
+
+    transition:var(--transition);
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:var(--orange);
+
+    box-shadow:
+        0 0 0 3px var(--orangeDim);
+
+}
+
+/* ===============================
+   CARD
+=============================== */
+
+.card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radiusLarge);
+
+    transition:var(--transition);
+
+}
+
+.card:hover{
+
+    border-color:var(--orange);
+
+    transform:translateY(-5px);
+
+    box-shadow:
+
+        var(--shadow),
+
+        0 0 25px var(--orangeDim);
+
+}
+
+/* ===============================
+   PANEL
+=============================== */
+
+.panel{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radiusLarge);
+
+}
+
+/* ===============================
+   SECTION TITLE
+=============================== */
+
+.sectionHeader{
+
+    margin-bottom:30px;
+
+}
+
+.sectionHeader h2{
+
+    font-size:34px;
+
+    margin-bottom:8px;
+
+}
+
+.sectionHeader p{
+
+    color:var(--text2);
+
+}
+
+/* ===============================
+   CONTAINER
+=============================== */
+
+.container{
+
+    width:min(1400px,100%);
+
+    margin:auto;
+
+}
+
+/* ===============================
+   TAG
+=============================== */
+
+.tag{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    background:var(--orangeSoft);
+
+    color:var(--orange2);
+
+    border:1px solid rgba(200,101,26,.2);
+
+    font-size:13px;
+
+}
+
+/* ===============================
+   SHOW / HIDE
+=============================== */
+
+.hidden{
+
+    display:none;
+
+}
+
+.show{
+
+    display:block;
+
+    animation:fadeUp .4s ease;
+
+}
+
+/* ===============================
+   ANIMATION
+=============================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===============================
+   SCROLLBAR
+=============================== */
+
+::-webkit-scrollbar{
+
+    width:7px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:var(--bg);
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--orange);
+
+    border-radius:20px;
+
+}
+
+/* ===============================
+   SELECTION
+=============================== */
+
+::selection{
+
+    background:var(--orange);
+
+    color:white;
+
+}
+
+/* ===============================
+   IMAGE
+=============================== */
+
+img{
+
+    user-select:none;
+
+    -webkit-user-drag:none;
+
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+
+@media(max-width:900px){
+
+    .container{
+
+        width:95%;
+
+    }
+
+}

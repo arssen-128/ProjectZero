@@ -1,0 +1,28 @@
+Electronic Parts
+	Recipe
+	200g
+	5s
+	1x Broken Fuse
+9V Battery
+	Recipe
+	100g
+	10s
+	1x Battery
+Flashlight
+	Recipe
+	125g
+	10s
+	1x 9V Battery
+	1x Broken Vape
+	1x Electronic Parts
+	1x Plastic
+Electronic Parts
+	Recipe
+	200g
+	10s
+	1x Broken Vape
+Electronic Parts
+	Recipe
+	200g
+	10s
+	1x Broken Radio

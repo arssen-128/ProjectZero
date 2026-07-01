@@ -1,0 +1,105 @@
+Struktur Folder:
+
+Looting/
+│
+├── ATM/
+│   ├── !ATM.png
+│   ├── Bottle Caps.png
+│   └── Broken ATM.png
+│
+├── Ban/
+│   ├── !pile of unused tires.png
+│   └── Tire Scraps.png
+│
+├── Barrel/
+│   ├── !Barrel Table.png
+│   ├── !Hose Reel.png
+│   ├── Cork.png
+│   ├── Metal Pipes.png
+│   ├── Rebar.png
+│   └── Rusty Pipe.png
+│
+├── Building debris/
+│   ├── !Building debris.png
+│   ├── !Building debris (2).png
+│   ├── Rebar.png
+│   ├── Rubber.png
+│   ├── Rusty Pipe.png
+│   └── Rusty Screws.png
+│
+├── cash register/
+│   ├── !cash register.png
+│   ├── Gun Parts.png
+│   ├── Gunpowder.png
+│   ├── Hair Pick.png
+│   └── Pistol Ammo Case.png
+│
+├── Dead Zombie/
+│   ├── !Dead Zombie.png
+│   ├── !Dead Zombie (2).png
+│   ├── Antifreeze.png
+│   ├── Broken Radio.png
+│   ├── Dirty Cloth.png
+│   ├── Dirty Water.png
+│   ├── Gunpowder.png
+│   ├── Old Shoes.png
+│   ├── Old Wallet.png
+│   └── Shampoo Bottle.png
+│
+├── garbage can/
+│   ├── !garbage can.png
+│   ├── !garbage can2.png
+│   ├── !Sampah.png
+│   ├── Broken Fuse.png
+│   ├── Broken Vape.png
+│   ├── Duct Tape.png
+│   ├── Empty Cans.png
+│   ├── Fish Bait.png
+│   ├── Lighter.png
+│   ├── Paper Scraps.png
+│   └── Rubbing Alcohol.png
+│
+├── junk car/
+│   ├── !junk bus.png
+│   ├── !junk car.png
+│   ├── !junk car2.png
+│   ├── !junk car3.png
+│   ├── !junk car4.png
+│   ├── !junk van.png
+│   ├── Air Bags.png
+│   ├── Broken Gear.png
+│   ├── Frame 90.png
+│   ├── Jumper Cables.png
+│   ├── Oil Filter.png
+│   ├── Old Brake Rotors.png
+│   ├── Sewing Kit.png
+│   └── Spark Plugs.png
+│
+├── Kardus/
+│   ├── !used cardboard.png
+│   ├── Battery.png
+│   ├── Rusty Pocket Knife.png
+│   └── Tampon.png
+│
+├── Loot_box/
+│   ├── !Loot Box.png
+│   ├── Bag of Flour.png
+│   ├── Bag of Rice.png
+│   ├── Bag of Sugar.png
+│   ├── BMX.png
+│   ├── Bolt.png
+│   ├── Broken Shovel.png
+│   ├── Metal Beams.png
+│   ├── Metal Shard.png
+│   ├── PB Gloves.png
+│   ├── Phone Charger.png
+│   ├── Piece of Kevlar.png
+│   ├── Plate Holder.png
+│   └── Rivets.png
+│
+└── Oil_Barrel/
+    ├── !oil barrel.png
+    ├── Military Backpack.png
+    ├── Rusty Nails.png
+    ├── Rusty Wrench.png
+    └── Wire Scraps.png

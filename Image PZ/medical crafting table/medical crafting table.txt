@@ -1,0 +1,57 @@
+Antibiotics A
+	Recipe
+	100g
+	To reduce your contamination levels from
+	zombie bites
+	15s
+	2x Tampon
+	2x Rubbing Alcohol
+First Aid Kit
+	Recipe
+	500g
+	8s
+	2x Tampon
+	2x Plastic
+Improvised Ban...
+	Recipe
+	100g
+	5s
+	1x Cork
+	1x Duct Tape
+	5x Dirty Clothes
+Dirty Bandage
+	Recipe
+	50g
+	5s
+	1x Rusty Pocketknife
+	5x Dirty Clothes
+Tactical Tampon
+	Recipe
+	50g
+	5s
+	4x Tampon
+Adrenaline Shot
+	Recipe
+	100g
+	use to increase body resistance
+	10s
+	3x Yarrow Plants
+	4x Pumpkin
+	Sx Cabbage
+Vitamin Injection
+	Recipe
+	100g
+	use to increase stamina
+	8s
+	2x Yarrow Plants
+	3x Sunflower
+	3x Beetroot
+Adrenaline Injec...
+	Recipe
+	100g
+	use to increase health
+	8s
+	1x Tactical Tampon
+	3x Tomato
+	3x Radish
+	4x Yarrow Plants

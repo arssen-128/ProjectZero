@@ -1,0 +1,18 @@
+Weapons & Equipment
+	Common
+		Crowbar.png
+		Large Backpack.png
+		Medium Backpack.png
+		Pistol Ammo.png
+		Radio.png
+	Epic
+		BMX.png
+		Military Backpack.png
+		Nail Gun.png
+		Pager.png
+		Pistol Ammo Case.png
+	Mythic
+	Rare
+		Armor.png
+		Uncommon
+		Knife.png

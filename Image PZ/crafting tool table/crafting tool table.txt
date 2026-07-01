@@ -1,0 +1,43 @@
+Knife
+	Recipe
+	800g
+	5s
+	1x Duct Tape
+	1x Rebar
+	3x Rusty Pocketknife
+Hammer
+	Recipe
+	1.5kg
+	5s
+	1x Rusty Pipe
+	5x Wire Scraps
+	5x Scrap Metal
+Stone Hatchet
+	Recipe
+	800g
+	5s
+	1x 2x4
+	2x Stone
+	2x Fabric
+Crowbar
+	Recipe
+	1.5kg
+	5s
+	1x Hammer
+	1x Rebar
+	10x Scrap Metal
+Fishing Rod
+	Recipe
+	500g
+	5s
+	1x Rusty Pocketknife
+	2x Rebar
+	4x Fabric
+Wrench
+	Recipe
+	1.5kg
+	5s
+	1x Hammer
+	1x Duct Tape
+	1x Rusty Wrench
+	5x Scrap Metal

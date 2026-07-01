@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SAVIORS | Project Zero</title>
+
+<style>
+
+/* ===========================
+   COLOR SYSTEM
+=========================== */
+
+:root{
+    --bg:#0F1115;
+    --surface:#1B1F27;
+    --card:#232834;
+
+    --orange:#C76B29;
+    --green:#596348;
+    --red:#6B1D1D;
+
+    --text:#E8E8E8;
+    --text-secondary:#A7A7A7;
+
+    --border:#2F3645;
+}
+
+/* ===========================
+   RESET
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:999;
+    background:rgba(15,17,21,.9);
+    border-bottom:1px solid var(--border);
+}
+
+nav{
+    max-width:1400px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+}
+
+.logo{
+    font-size:24px;
+    color:var(--orange);
+    font-weight:bold;
+}
+
+nav ul{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+nav a{
+    text-decoration:none;
+    color:white;
+}
+
+nav a:hover{
+    color:var(--orange);
+}
+
+/* ===========================
+   SECTION
+=========================== */
+
+section{
+    padding:120px 8%;
+}
+
+.section-title{
+    font-size:40px;
+    margin-bottom:30px;
+    color:var(--orange);
+}
+
+/* ===========================
+   HERO
+=========================== */
+
+.hero{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+
+    background:url('banner.jpg') center/cover;
+}
+
+.hero-overlay{
+    background:rgba(0,0,0,.5);
+    padding:50px;
+    border-radius:15px;
+}
+
+.hero h1{
+    font-size:80px;
+}
+
+.hero p{
+    margin-top:15px;
+    font-size:20px;
+}
+
+/* ===========================
+   HOME
+=========================== */
+
+.home-grid{
+    display:grid;
+    grid-template-columns:1fr 1.5fr;
+    gap:25px;
+}
+
+.card{
+    background:var(--surface);
+    padding:25px;
+    border-radius:15px;
+    border:1px solid var(--border);
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+}
+
+.gallery img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* ===========================
+   BACKSTORY
+=========================== */
+
+.language-buttons{
+    margin-bottom:20px;
+}
+
+.language-buttons button{
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+.story{
+    background:var(--surface);
+    padding:30px;
+    border-radius:15px;
+    line-height:1.8;
+}
+
+/* ===========================
+   MEMBERS
+=========================== */
+
+.member-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.member-card{
+    background:var(--surface);
+    padding:20px;
+    text-align:center;
+    border-radius:15px;
+    cursor:pointer;
+}
+
+.member-card:hover{
+    border:1px solid var(--orange);
+}
+
+/* ===========================
+   BASE
+=========================== */
+
+.base-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.base-grid img{
+    width:100%;
+    border-radius:15px;
+}
+
+/* ===========================
+   CRAFTING
+=========================== */
+
+.search{
+    margin-bottom:20px;
+}
+
+.search input{
+    width:100%;
+    padding:12px;
+}
+
+.item-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+.item{
+    background:var(--surface);
+    padding:20px;
+    border-radius:12px;
+}
+
+/* ===========================
+   MODAL
+=========================== */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-content{
+    background:var(--surface);
+    width:500px;
+    max-width:90%;
+    padding:30px;
+    border-radius:15px;
+}
+
+.close{
+    float:right;
+    cursor:pointer;
+    font-size:25px;
+}
+
+/* ===========================
+   LIGHTBOX
+=========================== */
+
+.lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+}
+
+.lightbox img{
+    max-width:90%;
+    max-height:90%;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+footer{
+    text-align:center;
+    padding:30px;
+    border-top:1px solid var(--border);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:900px){
+
+    .home-grid,
+    .base-grid{
+        grid-template-columns:1fr;
+    }
+
+    nav{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .hero h1{
+        font-size:50px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+
+<div class="logo">SAVIORS</div>
+
+<ul>
+<li><a href="#home">Home</a></li>
+<li><a href="#story">Backstory</a></li>
+<li><a href="#members">Members</a></li>
+<li><a href="#base">Base</a></li>
+<li><a href="#crafting">Crafting</a></li>
+</ul>
+
+</nav>
+</header>
+
+<section class="hero" id="home">
+
+<div class="hero-overlay">
+
+<h1>SAVIORS</h1>
+
+<p>No One Left Behind</p>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="home-grid">
+
+<div class="card">
+
+<h2>Latest Activity</h2>
+
+<p>Malam ini kami sedang membangun markas utama...</p>
+
+</div>
+
+<div class="card">
+
+<h2>Gallery</h2>
+
+<div class="gallery">
+
+<img src="https://picsum.photos/300?1">
+<img src="https://picsum.photos/300?2">
+<img src="https://picsum.photos/300?3">
+<img src="https://picsum.photos/300?4">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="story">
+
+<h2 class="section-title">Backstory</h2>
+
+<div class="language-buttons">
+
+<button id="idBtn">Indonesia</button>
+<button id="enBtn">English</button>
+
+</div>
+
+<div class="story" id="storyContent">
+
+MASUKKAN CERITA INDONESIA DI SINI
+
+</div>
+
+</section>
+
+<section id="members">
+
+<h2 class="section-title">Membership</h2>
+
+<div class="member-grid">
+
+<div class="member-card">
+Leader
+</div>
+
+<div class="member-card">
+Right Hand
+</div>
+
+<div class="member-card">
+Blood
+</div>
+
+</div>
+
+</section>
+
+<section id="base">
+
+<h2 class="section-title">Base Location</h2>
+
+<div class="base-grid">
+
+<img src="https://picsum.photos/600/400">
+
+<div class="card">
+
+<h3>Savior HQ</h3>
+
+<p>Location : Los Santos Airport</p>
+
+<p>Radio Tower : XX</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="crafting">
+
+<h2 class="section-title">Crafting Database</h2>
+
+<div class="search">
+
+<input type="text" id="searchItem" placeholder="Search Item">
+
+</div>
+
+<div class="item-grid">
+
+<div class="item">Bandage</div>
+<div class="item">Repair Kit</div>
+<div class="item">Steel Plate</div>
+<div class="item">Lockpick</div>
+
+</div>
+
+</section>
+
+<footer>
+
+SAVIORS © Project Zero
+
+</footer>
+
+<div class="modal" id="memberModal">
+
+<div class="modal-content">
+
+<span class="close">&times;</span>
+
+<h2>Member Name</h2>
+
+<p>Member information...</p>
+
+</div>
+
+</div>
+
+<div class="lightbox" id="lightbox">
+
+<img id="lightboxImg">
+
+</div>
+
+<script>
+
+/* ====================
+   MEMBER MODAL
+==================== */
+
+const modal =
+document.getElementById("memberModal");
+
+document.querySelectorAll(".member-card")
+.forEach(card=>{
+
+card.onclick=()=>{
+modal.style.display="flex";
+};
+
+});
+
+document.querySelector(".close")
+.onclick=()=>{
+
+modal.style.display="none";
+
+};
+
+/* ====================
+   GALLERY LIGHTBOX
+==================== */
+
+const lightbox =
+document.getElementById("lightbox");
+
+const lightboxImg =
+document.getElementById("lightboxImg");
+
+document.querySelectorAll(".gallery img")
+.forEach(img=>{
+
+img.onclick=()=>{
+
+lightbox.style.display="flex";
+lightboxImg.src=img.src;
+
+};
+
+});
+
+lightbox.onclick=()=>{
+
+lightbox.style.display="none";
+
+};
+
+/* ====================
+   LANGUAGE SWITCH
+==================== */
+
+const story =
+document.getElementById("storyContent");
+
+document.getElementById("idBtn")
+.onclick=()=>{
+
+story.innerHTML=
+"MASUKKAN CERITA INDONESIA DI SINI";
+
+};
+
+document.getElementById("enBtn")
+.onclick=()=>{
+
+story.innerHTML=
+"INSERT ENGLISH STORY HERE";
+
+};
+
+/* ====================
+   CRAFTING SEARCH
+==================== */
+
+document.getElementById("searchItem")
+.addEventListener("keyup",function(){
+
+let value =
+this.value.toLowerCase();
+
+document.querySelectorAll(".item")
+.forEach(item=>{
+
+item.style.display =
+item.innerText.toLowerCase()
+.includes(value)
+? "block"
+: "none";
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

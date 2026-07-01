@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Zero Database</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ============================================================
+   TOKENS
+   ============================================================ */
+        :root {
+            --bg: #0d0c0a;
+            --bg2: #111009;
+            --surface: #181510;
+            --surface2: #1e1b14;
+            --surface3: #252018;
+            --border: #2e2820;
+            --border2: #3c3428;
+            --orange: #c8651a;
+            --orange2: #e07a20;
+            --orange-dim: rgba(200, 101, 26, .12);
+            --orange-glow: rgba(200, 101, 26, .25);
+            --orange-faint: rgba(200, 101, 26, .06);
+            --text: #d4c9b0;
+            --text2: #8e8272;
+            --text3: #55503f;
+            --rust: #7a3e12;
+            --danger: #9b2c2c;
+            --mono: 'Share Tech Mono', monospace;
+            --display: 'Rajdhani', sans-serif;
+            --body: 'Barlow', sans-serif;
+            --radius: 2px;
+            --radius2: 4px;
+            --transition: 200ms ease;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--body);
+        }
+        body {
+            background:
+                radial-gradient(circle at top, #1d2430 0%, #0b0d11 70%);
+            color: #ECECEC;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+        .container {
+            width: min(1400px, 100%);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        header h1 {
+            font-size: 58px;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+        header span {
+            color:var(--orange);
+        }
+        header p {
+            margin-top: 12px;
+            color:var(--text2);
+            font-size: 20px;
+        }
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .menuCard {
+            background: #171C24;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 50px 35px;
+            text-align: center;
+            cursor: pointer;
+            transition: .35s;
+            position: relative;
+            overflow: hidden;
+        }
+        .menuCard::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, .12),
+                    transparent);
+            transition: .6s;
+        }
+        .menuCard:hover::before {
+            left: 170%;
+        }
+        .menuCard:hover {
+            transform:
+                translateY(-10px);
+            border-color:var(--orange);
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, .5),
+                0 0 25px rgba(245, 158, 11, .20);
+        }
+        .menuCard img {
+            width: 140px;
+            height: 140px;
+            object-fit: contain;
+            margin-bottom: 35px;
+            transition: .35s;
+            animation: float 3s ease-in-out infinite;
+        }
+        .menuCard:hover img {
+            transform: scale(1.08);
+        }
+        .menuCard h2 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+        .menuCard p {
+            color: #A7A7A7;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .fullCard {
+            grid-column: 1 / -1;
+            max-width: 900px;
+            margin: auto;
+            padding: 55px;
+        }
+        .fullCard iconify-icon {
+            font-size: 90px;
+            margin-bottom: 25px;
+        }
+        .fullCard h2 {
+            font-size: 42px;
+        }
+        .fullCard p {
+            max-width: 650px;
+            margin: 20px auto 35px;
+            font-size: 18px;
+        }
+        .fullCard button {
+            padding: 18px 45px;
+            font-size: 18px;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        @media(max-width:1000px) {
+            .menu {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 42px;
+            }
+            .menuCard {
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                PROJECT <span>ZERO</span>
+            </h1>
+            <p>
+                Interactive Item Database
+            </p>
+        </header>
+        <div class="menu">
+            <div class="menuCard" onclick="location.href='crafting.html'">
+                <img src="https://img.icons8.com/fluency/240/hammer.png">
+                <h2>
+                    Crafting
+                </h2>
+                <p>
+                    Browse every crafting station, recipes, required materials and production chains.
+                </p>
+            </div>
+            <div class="menuCard" onclick="location.href='looting.html'">
+                <img src="https://img.icons8.com/fluency/240/treasure-chest.png">
+                <h2>
+                    Looting
+                </h2>
+                <p>
+                    Discover every loot source, item drop, rarity and possible rewards throughout the world.
+                </p>
+            </div>
+            <div class="menuCard" onclick="location.href='scrapping.html'">
+                <img src="https://img.icons8.com/fluency/240/recycling.png">
+                <h2>
+                    Scrapping
+                </h2>
+                <p>
+                    Break unwanted items into valuable resources using the Scrap Machine.
+                </p>
+            </div>
+            <div class="menuCard fullCard">
+                <iconify-icon icon="mdi:view-grid"></iconify-icon>
+                <h2>SEE ALL ITEMS</h2>
+                <p>
+                    Browse the complete Project Zero item database.
+                </p>
+                <button onclick="location.href='http://localhost/PZ/indexx.html'">
+                    SHOW ALL →
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
